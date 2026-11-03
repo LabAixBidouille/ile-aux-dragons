@@ -174,7 +174,7 @@ Anna enfila sa tuque et prit sa crosse. Elle allait passer à l'action. Les mots
 
 Anna décida d'agir seule et de se faufiler dans le château. Elle quitta la maison de sa grand-mère et traversa le village endormi. Devant elle, la silhouette noire du château se dressait au sommet de la colline.
 
-Elle gravit le chemin dans la nuit, puis fit le tour des remparts. Derrière les cuisines, elle repéra une petite porte par où on sortait les ordures. Elle attendit, cachée dans l'ombre. Lorsque la porte s’ouvrit sur une jeune femme portant un seau d’eau, Anna en profita pour franchir le seuil, aussi silencieuse qu'un renard sur la neige.
+Elle gravit le chemin dans la nuit, puis fit le tour des remparts. Derrière les cuisines, elle repéra une petite porte par où on sortait les ordures. Elle attendit, cachée dans l'ombre. Lorsque la porte s'ouvrit sur une jeune femme portant un seau d'eau, Anna en profita pour franchir le seuil, aussi silencieuse qu'un renard sur la neige.
 
 À l'intérieur, les couloirs sentaient la pierre froide. Deux gardes approchaient. Anna se glissa derrière une armure et retint son souffle. L'un d'eux s'arrêta tout près d'elle ; elle aperçut ses bottes entre les jambes de l'armure. Puis son compagnon l'appela et les pas s'éloignèrent.
 
@@ -291,11 +291,11 @@ Quand vint le moment de rentrer, Croquemou se posa près d'elle.
 
 « Montréal, c'est loin ? » demanda-t-il. Anna sourit. Elle fit ses adieux à sa grand-mère et grimpa sur le dos de Croquemou. Ensemble, ils s'envolèrent vers le Canada, par-dessus la mer.
 
-À leur arrivée, le dragon orange aux taches jaunes se posa dans la neige du parc du Mont-Royal. En contrebas brillaient les lumières de Montréal et, plus loin, le fleuve Saint-Laurent. Anna glissa de son dos, sa crosse à la main, et courut jusqu'à chez elle. Croquemou la suivit et attendit dehors, près de la fenêtre.
+À leur arrivée, le dragon orange aux taches jaunes se posa dans la neige du parc du Mont-Royal. En contrebas brillaient les lumières de Montréal et, plus loin, le fleuve Saint-Laurent. Anna glissa de son dos, sa crosse à la main, et courut jusque chez elle. Croquemou la suivit et attendit dehors, près de la fenêtre.
 
 Anna ouvrit la porte. Sa mère était assise dans la cuisine, comme le soir où elle lui avait parlé de sa grand-mère. Elle leva les yeux et se précipita pour la serrer dans ses bras.
 
-Elle lui raconta tout : Croquemou, le sorcier et les dragons libérés. Sa mère l'écouta sans l'interrompre. Des larmes coulèrent sur ses joues.
+Anna lui raconta tout : Croquemou, le sorcier et les dragons libérés. Sa mère l'écouta sans l'interrompre. Des larmes coulèrent sur ses joues.
 
 « J'avais promis de ne rien changer… », murmura Anna.
 
