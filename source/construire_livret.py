@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Construit le livret imprimable des « Trois sœurs » à partir de source/texte.md.
+"""Construit le livret imprimable de « L'île aux dragons » à partir de source/texte.md.
 
-Pages de 124 × 186 mm (format des livrets de l'atelier), texte en 11 pt ; un chapitre
-trop long continue sur la page suivante. Chaque renvoi indique la page du chapitre visé :
-le livret est donc composé deux fois, la seconde avec les bons numéros de page.
+Pages de 124 × 186 mm (format des livrets de l'atelier). Les planches de ce livre sont des pages entières
+au format portrait : chaque chapitre s'ouvre sur sa planche en pleine page, puis le texte suit ; un
+chapitre trop long continue sur la page suivante. Chaque renvoi indique la page du chapitre visé : le
+livret est donc composé plusieurs fois, jusqu'à ce que les numéros de page se stabilisent.
+
+Le style reprend celui du site, adapté à l'impression : titres en Eagle Lake, « Chapitre n » en Skranji
+rouge tuque, texte en Alegreya, encart du tirage en Literata sur un bleu glace clair (le bleu nuit du site
+coûterait trop d'encre), pastilles dorées Pair / Impair, séparateur à l'œuf de dragon.
 
 Produit trois PDF dans le dossier Impression du livre :
-- LesTroisSoeurs_Livret_lecture.pdf : les pages dans l'ordre de lecture, pour relire ;
-- LesTroisSoeurs_Livret_A4_bord_court.pdf et _bord_long.pdf : les pages imposées deux par
-  deux sur A4 paysage, avec lignes de coupe et de pliure continues, très claires, pour une impression recto verso pliée en cahier
-  (choisir le fichier selon le retournement de l'imprimante).
+- IleAuxDragons_Livret_lecture.pdf : les pages dans l'ordre de lecture, pour relire ;
+- IleAuxDragons_Livret_A4_bord_court.pdf et _bord_long.pdf : les pages imposées deux par deux sur A4
+  paysage, avec lignes de coupe et de pliure continues, très claires, pour une impression recto verso
+  pliée en cahier (choisir le fichier selon le retournement de l'imprimante).
 
 Nécessite Google Chrome, pdftotext (poppler) et le module Python pypdf.
 Usage, depuis la racine du dépôt : python3 source/construire_livret.py
@@ -28,92 +33,111 @@ from construire_site import AUTRICES, CONTEXTE, SYNOPSIS, TITRE, illustration, l
 
 RACINE = Path(__file__).resolve().parent.parent
 IMPRESSION = RACINE.parent / "Impression"
-NOM = "LesTroisSoeurs"
+NOM = "IleAuxDragons"
 
 MM = 72 / 25.4
 LARGEUR_PAGE, HAUTEUR_PAGE = 124, 186          # mm
 A4_L, A4_H = 297 * MM, 210 * MM                  # A4 paysage, en points
 
+NUIT, TUQUE, GLACE, NEIGE, OR_OEUF, ENCRE, GRIS = "#24305a", "#c8322a", "#7fa3c8", "#e3ecf6", "#f7b04f", "#2a2c3d", "#6a6e80"
+# Trait bleu glace effilé, celui du bouton Commencer et des séparateurs du site
+TRAIT = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E"
+         "%3Cpath d='M118 7 C80 1.5 40 4.5 8 7 C40 9.5 80 12.5 118 7 Z' fill='%237fa3c8'/%3E"
+         "%3Ccircle cx='5' cy='7' r='3' fill='%237fa3c8'/%3E%3C/svg%3E")
+
 CSS = f"""
-@font-face {{ font-family: "IM Fell English"; src: url("{(RACINE / 'fonts/IMFellEnglish.woff2').as_uri()}"); }}
-@font-face {{ font-family: "IM Fell English"; font-style: italic; src: url("{(RACINE / 'fonts/IMFellEnglish-italique.woff2').as_uri()}"); }}
-@font-face {{ font-family: "EB Garamond"; font-weight: 400 800; src: url("{(RACINE / 'fonts/EBGaramond.woff2').as_uri()}"); }}
-@font-face {{ font-family: "EB Garamond"; font-style: italic; font-weight: 400 800; src: url("{(RACINE / 'fonts/EBGaramond-italique.woff2').as_uri()}"); }}
+@font-face {{ font-family: "Eagle Lake"; src: url("{(RACINE / 'fonts/EagleLake.woff2').as_uri()}"); }}
+@font-face {{ font-family: "Skranji"; font-weight: 700; src: url("{(RACINE / 'fonts/Skranji.woff2').as_uri()}"); }}
+@font-face {{ font-family: "Alegreya"; font-weight: 400 900; src: url("{(RACINE / 'fonts/Alegreya.woff2').as_uri()}"); }}
+@font-face {{ font-family: "Alegreya"; font-style: italic; font-weight: 400 900; src: url("{(RACINE / 'fonts/Alegreya-i.woff2').as_uri()}"); }}
+@font-face {{ font-family: "Literata"; font-weight: 200 900; src: url("{(RACINE / 'fonts/Literata.woff2').as_uri()}"); }}
+@font-face {{ font-family: "Literata"; font-style: italic; font-weight: 200 900; src: url("{(RACINE / 'fonts/Literata-i.woff2').as_uri()}"); }}
 
 @page {{
   size: {LARGEUR_PAGE}mm {HAUTEUR_PAGE}mm;
   margin: 13mm 12mm 15mm 12mm;
-  @bottom-center {{ content: counter(page); font-family: "EB Garamond"; font-size: 9.5pt; color: #5d6475; }}
+  @bottom-center {{ content: counter(page); font-family: "Alegreya"; font-size: 9.5pt; color: {GRIS}; }}
 }}
 @page sans-numero {{ @bottom-center {{ content: none; }} }}
 
 * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }}
-/* EB Garamond a de petites lettres : 12 pt pour lire aussi bien qu'un 11 pt ordinaire */
-html {{ font-family: "EB Garamond", serif; font-size: 12pt; line-height: 1.38; color: #22263a; }}
+/* Alegreya a de petites lettres : 12 pt pour lire aussi bien qu'un 11 pt ordinaire */
+html {{ font-family: "Alegreya", serif; font-size: 12pt; line-height: 1.4; color: {ENCRE}; }}
 body {{ margin: 0; }}
 p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .page-seule {{ break-before: page; }}
 .sans-numero {{ page: sans-numero; }}
 .marque {{ font-size: 1pt; color: #ffffff; }}
 
-/* Couverture */
+/* Couverture intérieure */
 .couverture {{ text-align: center; }}
-.couverture .surtitre {{ font-family: "IM Fell English"; font-style: italic; font-size: 10.5pt; color: #5d6475; }}
-.couverture .titre-livre {{ font-family: "IM Fell English"; font-size: 31pt; line-height: 0.95; letter-spacing: -0.3pt; color: #1d2b4f; margin: 1.5mm 0 1mm; }}
-.couverture .autrices {{ font-family: "IM Fell English"; font-style: italic; font-size: 15pt; color: #a8740f; }}
-.couverture img {{ display: block; width: 100%; margin: 5mm 0 4mm; }}
-.couverture .resume p {{ font-size: 10.2pt; line-height: 1.3; margin-bottom: 0.45em; }}
+.couverture .surtitre {{ font-family: "Skranji"; font-weight: 700; font-size: 10pt; color: {GLACE}; }}
+.couverture .titre-livre {{ font-family: "Eagle Lake"; font-size: 28pt; line-height: 1.05; color: {NUIT};
+  text-shadow: 0.5mm 0.5mm 0 {NEIGE}; margin: 1.5mm 0 1mm; }}
+.couverture .titre-livre span {{ color: #e9982f; }}
+.couverture .autrices {{ font-family: "Skranji"; font-weight: 700; font-size: 13pt; color: {TUQUE}; }}
+.couverture img {{ display: block; width: 72mm; margin: 4mm auto 4mm; border-radius: 3mm; }}
+.couverture .resume p {{ font-size: 10pt; line-height: 1.32; margin-bottom: 0.45em; }}
+
+/* Planche du chapitre : une page entière */
+.planche .cadre {{ display: flex; align-items: center; justify-content: center; height: 150mm; }}
+.planche img {{ display: block; max-width: 100%; max-height: 150mm; border-radius: 3mm; }}
+.planche .marque {{ display: block; line-height: 1; }}
 
 /* Titres */
-.numero {{ display: block; font-family: "IM Fell English"; font-style: italic; font-size: 12pt; color: #a8740f; margin-bottom: 0.5mm; }}
-h1 {{ font-family: "IM Fell English"; font-weight: 400; font-size: 19pt; line-height: 1.05; color: #1d2b4f; margin: 0 0 4mm; }}
-/* L'image remplit tout son cadre doré (recadrée au besoin), sans bande vide */
-.illus img {{ display: block; width: 100%; height: 62mm; object-fit: cover; margin: 0 auto 4mm;
-  border: 0.8mm solid #d99a2b; border-radius: 3.5mm; }}
+.numero {{ display: block; font-family: "Skranji"; font-weight: 700; font-size: 11pt; color: {TUQUE}; margin-bottom: 0.5mm; }}
+h1 {{ font-family: "Eagle Lake"; font-weight: 400; font-size: 18pt; line-height: 1.1; color: {NUIT}; margin: 0 0 4mm; }}
 
-.serre2 .illus img {{ height: 30mm; }}
-.serre .illus img {{ height: 40mm; }}
+/* Resserrements pour les fins de chapitre trop courtes */
+.serre p {{ margin-bottom: 0.4em; }}
 .serre .separateur {{ margin: 2mm 0 2mm; }}
-.serre .elan {{ margin-top: 1.5mm; }}
+.serre2 {{ font-size: 11.5pt; line-height: 1.33; }}
 
-/* Séparateur, choix, fin */
-.separateur {{ display: flex; align-items: center; justify-content: center; gap: 3mm; margin: 4mm 0 3mm; break-after: avoid; }}
-.separateur::before, .separateur::after {{ content: ""; width: 20mm; height: 0.3mm; background: linear-gradient(to right, transparent, #d99a2b); }}
-.separateur::after {{ background: linear-gradient(to left, transparent, #d99a2b); }}
-.separateur img {{ width: 8mm; }}
-.appel {{ font-family: "IM Fell English"; font-style: italic; font-size: 14pt; color: #a8740f; margin: 0 0 3mm; }}
+/* Séparateur : l'œuf de dragon entre deux traits bleu glace, aligné sur la gauche du texte */
+.separateur {{ display: flex; align-items: center; justify-content: flex-start; gap: 1mm; margin: 4mm 0 3mm; break-after: avoid; }}
+.separateur::before, .separateur::after {{ content: ""; width: 14mm; height: 3mm; background: url("{TRAIT}") no-repeat center / contain; }}
+.separateur::after {{ transform: scaleX(-1); }}
+.separateur img {{ width: 7mm; }}
+.appel {{ font-family: "Eagle Lake"; font-size: 13pt; color: {NUIT}; margin: 0 0 3mm; }}
 /* Les choix ne restent jamais seuls en haut d'une page : ils emmènent le dernier paragraphe avec eux */
 .suite {{ break-inside: avoid; break-before: avoid; }}
-.consigne {{ font-family: "IM Fell English"; font-style: italic; font-size: 13pt; line-height: 1.25; color: #1d2b4f; margin: 0 0 2mm; }}
+/* Encart du tirage, en Literata sur bleu glace clair */
+.tirage {{ font-family: "Literata"; font-size: 10.5pt; line-height: 1.45; background: {NEIGE}; border-radius: 3mm;
+  padding: 3.5mm 4.5mm; margin-top: 4mm; }}
+.consigne {{ font-style: italic; color: {NUIT}; margin: 0 0 2mm; }}
 ul.choix {{ margin: 0; padding: 0; list-style: none; }}
-ul.choix li {{ margin: 0 0 1.6mm; padding-left: 4.5mm; text-indent: -4.5mm; color: #1d2b4f; font-weight: 700; }}
-ul.choix li::before {{ content: "✦"; color: #d99a2b; display: inline-block; width: 4.5mm; text-indent: 0; font-weight: 400; }}
-.elan {{ text-align: center; margin-top: 3mm; }}
-.elan span {{ display: inline-block; font-family: "IM Fell English"; font-size: 12pt; color: #1d2b4f;
-  border: 0.3mm solid #d99a2b; outline: 0.3mm solid #d99a2b; outline-offset: 0.9mm; padding: 1.4mm 5mm 1.6mm; }}
-.elan span::before, .elan span::after {{ content: " ✦ "; color: #d99a2b; font-size: 8pt; }}
-.fin {{ text-align: center; font-family: "IM Fell English"; font-size: 24pt; letter-spacing: 2pt; color: #1d2b4f; margin-top: 2mm; }}
+ul.choix li {{ margin: 0 0 1.4mm; color: {NUIT}; font-weight: 700; }}
+.pastille {{ display: inline-block; min-width: 6mm; padding: 0.3mm 2mm 0.1mm; margin-right: 1.8mm; border-radius: 3mm;
+  background: {OR_OEUF}; color: {NUIT}; font-family: "Skranji"; font-weight: 700; font-size: 9.5pt; text-align: center; }}
+/* Renvoi seul : le bouton bleu glace du site, flèche rouge */
+.elan {{ margin-top: 3mm; }}
+.elan span {{ display: inline-block; font-family: "Skranji"; font-weight: 700; font-size: 11pt; color: {NUIT};
+  background: {NEIGE}; border-bottom: 0.8mm solid {GLACE}; border-radius: 2.5mm; padding: 1.4mm 4.5mm 1.2mm; }}
+.elan span::after {{ content: " →"; font-family: "Alegreya"; color: {TUQUE}; }}
+.fin {{ text-align: center; font-family: "Eagle Lake"; font-size: 26pt; color: {NUIT}; text-shadow: 0.6mm 0.6mm 0 {NEIGE}; margin-top: 4mm; }}
 
 /* Pages de fin et de contexte */
-.contexte h2 {{ font-family: "IM Fell English"; font-weight: 400; font-size: 17pt; color: #1d2b4f; margin: 0 0 4mm; }}
-.contexte p {{ font-size: 10.3pt; line-height: 1.32; }}
-.contexte .credits {{ font-size: 9.5pt; color: #5d6475; }}
+.contexte h2 {{ font-family: "Eagle Lake"; font-weight: 400; font-size: 16pt; color: {NUIT}; margin: 0 0 4mm; }}
+.contexte p {{ font-size: 9.9pt; line-height: 1.3; margin-bottom: 0.45em; }}
+.contexte .credits {{ font-size: 9.5pt; color: {GRIS}; }}
 .fiches {{ display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }}
 .fiches img {{ width: 100%; display: block; }}
 .fiches .pleine {{ grid-column: 1 / -1; }}
 .dos {{ display: flex; flex-direction: column; justify-content: flex-end; height: 156mm; text-align: center;
-  font-size: 9.5pt; color: #5d6475; }}
+  font-size: 9.5pt; color: {GRIS}; }}
 """
 
-def _separateur():
-    """Séparateur : la patte de loup étoilée de Manon entre deux traits dorés."""
-    return f'<div class="separateur"><img src="{(RACINE / "images/embleme.png").as_uri()}" alt=""></div>'
+SEPARATEUR = f'<div class="separateur"><img src="{(RACINE / "images/oeuf.png").as_uri()}" alt=""></div>'
 
 
-SEPARATEUR = _separateur()
+# Espaces insécables de la typographie française : un guillemet, un point d'interrogation ou un deux-points
+# ne se retrouve jamais seul en début de ligne
+INSECABLES = [("« ", "«\u00a0"), (" »", "\u00a0»"), (" :", "\u00a0:"), (" ?", "\u00a0?"), (" !", "\u00a0!"), (" ;", "\u00a0;")]
 
 
 def e(texte):
+    for avant, apres in INSECABLES:
+        texte = texte.replace(avant, apres)
     return html.escape(texte, quote=False)
 
 
@@ -128,16 +152,26 @@ def avec_page(texte, pages):
     return texte[: m.end()] + f" (page {page})" + texte[m.end():]
 
 
+def choix_html(texte, pages):
+    """« Un nombre pair : poursuis… » devient la pastille dorée Pair suivie de « poursuis… »"""
+    texte = avec_page(texte, pages)
+    m = re.match(r"(\d|Un nombre pair|Un nombre impair) : (.*)", texte)
+    if not m:
+        return e(texte)
+    pastille = {"Un nombre pair": "Pair", "Un nombre impair": "Impair"}.get(m[1], m[1])
+    return f'<span class="pastille">{pastille}</span>{e(m[2])}'
+
 
 def chapitre(ch, pages):
     cle = 0 if ch["nom"] == "Prologue" else int(ch["nom"].split()[-1])
-    classe = "page-seule" + (" serre" if cle in SERRES else "") + (" serre2" if cle in SERRES2 else "")
-    morceaux = [f'<section class="{classe}"><span class="marque">@@CH{cle}@@</span>']
+    morceaux = [f'<section class="page-seule planche"><span class="marque">@@CH{cle}@@</span>']
     image = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}.jpg"
     if image.exists():
-        morceaux.append(f'<div class="illus"><img src="{image.as_uri()}" alt=""></div>')
+        morceaux.append(f'<div class="cadre"><img src="{image.as_uri()}" alt=""></div>')
+    morceaux.append("</section>")
+    classe = "page-seule" + (" serre" if cle in SERRES else "") + (" serre2" if cle in SERRES2 else "")
+    morceaux.append(f'<section class="{classe}">')
     morceaux.append(f'<span class="numero">{e(ch["numero"])}</span><h1>{e(ch["titre"])}</h1>')
-
     corps, consigne, choix, fin, appel = [], None, [], False, False
     cibles = []
     for p in ch["paragraphes"]:
@@ -159,32 +193,35 @@ def chapitre(ch, pages):
             corps.append(f"<p>{e(p)}</p>")
     morceaux += corps
 
-    # Le bouton du prologue n'existe que sur le site : dans le livret, on tourne simplement la page
     # Dans un livre, inutile d'écrire « Poursuis au chapitre suivant » : on tourne simplement la page.
-    # Le renvoi reste quand il saute des chapitres (6 → 8, par exemple)
+    # Le renvoi reste quand il saute des chapitres (3 → 5, par exemple)
     if not consigne and len(choix) == 1 and cibles[0] == cle + 1:
         choix = []
-    suite = [] if appel else [SEPARATEUR]
+    # Pas de séparateur au-dessus de l'encart du tirage, comme sur le site
+    suite = [] if (appel or consigne) else [SEPARATEUR]
     if consigne:
-        suite.append(f'<p class="consigne">{e(consigne)}</p><ul class="choix">'
-                     + "".join(f"<li>{e(avec_page(c, pages))}</li>" for c in choix) + "</ul>")
+        suite.append(f'<div class="tirage"><p class="consigne">{e(consigne)}</p><ul class="choix">'
+                     + "".join(f"<li>{choix_html(c, pages)}</li>" for c in choix) + "</ul></div>")
     elif len(choix) > 1:
-        suite.append('<ul class="choix">' + "".join(f"<li>{e(avec_page(c, pages))}</li>" for c in choix) + "</ul>")
+        suite.append('<ul class="choix">' + "".join(f"<li>{choix_html(c, pages)}</li>" for c in choix) + "</ul>")
     elif choix:
-        suite.append(f'<div class="elan"><span>{e(avec_page(choix[0], pages))}</span></div>')
+        # Le point final disparaît devant la flèche du bouton
+        suite.append(f'<div class="elan"><span>{e(avec_page(choix[0].rstrip("."), pages))}</span></div>')
     if fin:
         suite.append('<div class="fin">FIN</div>')
-    if consigne or choix or fin:
+    if consigne or choix or fin or suite:
         morceaux.append(f'<div class="suite">{"".join(suite)}</div>')
     morceaux.append("</section>")
     return "".join(morceaux)
 
 
 def document(pages, blanches=0):
+    titre = e(TITRE).replace("dragons", "<span>dragons</span>")
     couverture = (
         '<section class="couverture sans-numero">'
         '<div class="surtitre">Une histoire dont le lecteur est le héros</div>'
-        f'<div class="titre-livre">{e(TITRE)}</div>'
+        f'<div class="titre-livre">{titre}</div>'
+        f'<div class="autrices">{e(AUTRICES)}</div>'
         f'<img src="{(RACINE / "images/couverture.jpg").as_uri()}" alt="">'
         '<div class="resume">' + "".join(f"<p>{e(p)}</p>" for p in SYNOPSIS.split("\n\n")) + "</div></section>"
     )
@@ -194,18 +231,18 @@ def document(pages, blanches=0):
     contexte = (
         '<section class="page-seule contexte"><h2>Comment est née cette histoire</h2>'
         + "".join(f"<p>{italique(p).replace('&lt;b&gt;', '<b>').replace('&lt;/b&gt;', '</b>')}</p>" for p in paragraphes)
-        + '<p class="credits">Une histoire librement inspirée du récit de deux jeunes autrices.<br>Réalisation du livre : '
+        + '<p class="credits">Une histoire librement inspirée du récit de Louisa et de June.<br>Réalisation du livre : '
           "Laboratoire d’Aix-périmentation et de Bidouille.</p></section>"
         '<section class="page-seule contexte"><h2>Les fiches de l’atelier</h2><div class="fiches">'
         f'<img src="{(fiches / "fiche_recit.jpg").as_uri()}" alt="">'
-        f'<img src="{(fiches / "fiche_personnage_rose.jpg").as_uri()}" alt="">'
+        f'<img src="{(fiches / "fiche_personnage_croquemou.jpg").as_uri()}" alt="">'
         f'<img class="pleine" src="{(fiches / "fiche_situation_1.jpg").as_uri()}" alt="">'
         "</div></section>"
     )
     chapitres = "".join(chapitre(ch, pages) for ch in lire_chapitres())
     vides = '<section class="page-seule sans-numero">&nbsp;</section>' * blanches
     dos = ('<section class="page-seule sans-numero"><div class="dos">'
-           f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par deux jeunes autrices pendant l’atelier "
+           f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par {e(AUTRICES)} pendant l’atelier "
            "« La quête du curry, une histoire dont tu es le héros », dans les bibliothèques Méjanes "
            "d’Aix-en-Provence, en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
            "</div></section>")
