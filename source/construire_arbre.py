@@ -23,6 +23,8 @@ OEUF = RACINE / "images" / "oeuf-arbre.png"
 # Couleurs du site : bleu nuit pour le texte, rouge de la tuque d'Anna pour les numéros, bleu glace pour
 # les cadres et les flèches, or de l'œuf pour les pastilles du tirage
 NUIT, TUQUE, GLACE, GLACE_FONCE, OR_OEUF, ENCRE = "#24305a", "#c8322a", "#7fa3c8", "#5f84ad", "#f7b04f", "#2a2c3d"
+# Fond bleu glace clair, pour que l'arbre ne flotte pas sur une page vide
+FOND = "#e3ecf6"
 GAUCHE, LARGEUR, HAUTEUR = 110, 900, 1580
 L_CASE, H_CASE = 230, 66
 
@@ -114,8 +116,8 @@ def icone(cle, oeuf):
 
 def fleche(points, etiquettes):
     trace = " ".join(f"{x},{y}" for x, y in points)
-    # Halo blanc sous chaque flèche : là où deux flèches se croisent, la dernière tracée passe dessus
-    svg = [f'<polyline points="{trace}" fill="none" stroke="#fff" stroke-width="8"/>',
+    # Halo couleur du fond sous chaque flèche : là où deux flèches se croisent, la dernière tracée passe dessus
+    svg = [f'<polyline points="{trace}" fill="none" stroke="{FOND}" stroke-width="8"/>',
            f'<polyline points="{trace}" fill="none" stroke="{GLACE_FONCE}" stroke-width="2" stroke-linejoin="round" '
            'marker-end="url(#pointe)"/>']
     for texte, x, y in etiquettes:
@@ -142,6 +144,7 @@ def construire():
            f'<defs><style>{polices}</style>',
            f'<filter id="ombre" x="-10%" y="-20%" width="120%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="{NUIT}" flood-opacity="0.18"/></filter>',
            f'<marker id="pointe" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="{GLACE_FONCE}"/></marker></defs>']
+    svg.append(f'<rect x="{GAUCHE}" y="0" width="{LARGEUR}" height="{HAUTEUR}" rx="28" fill="{FOND}"/>')
     svg += [fleche(t, e) for _, _, t, e in FLECHES]
     svg += [icone(c, oeuf) for c in ICONES]
     svg += [case(c, titres[c]) for c in CASES]
