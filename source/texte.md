@@ -56,9 +56,8 @@ Anna resta seule sur le quai, le cœur battant. Pourquoi ce dragon la détestait
 
 **Lance le dé pour découvrir ce qu'Anna va trouver sur l'île :**
 
-- 4 : poursuis au chapitre 3. -> 3
-- 2 : poursuis au chapitre 4. -> 4
-- Un autre nombre : relance le dé.
+- Un nombre pair : poursuis au chapitre 3. -> 3
+- Un nombre impair : poursuis au chapitre 4. -> 4
 
 ## Chapitre 3. Le jeune forgeron
 
@@ -166,9 +165,8 @@ Anna enfila sa tuque et prit sa crosse. Elle allait passer à l'action. Les mots
 
 **Lance le dé pour savoir comment Anna entre dans le château :**
 
-- 6 : poursuis au chapitre 6. -> 6
-- 1 : poursuis au chapitre 7. -> 7
-- Un autre nombre : relance le dé.
+- Un nombre pair : poursuis au chapitre 6. -> 6
+- Un nombre impair : poursuis au chapitre 7. -> 7
 
 ## Chapitre 6. Le passage des cuisines
 
