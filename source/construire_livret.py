@@ -71,7 +71,10 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 
 /* Couverture intérieure : le bleu nuit du site, à fond perdu, comme la page d'accueil */
 @page couverture {{ margin: 0; @bottom-center {{ content: none; }} }}
-.couverture {{ page: couverture; height: {HAUTEUR_PAGE}mm; padding: 13mm 12mm 10mm; text-align: center; color: #eef1fb;
+/* contenu centré dans toute la hauteur : même espace en haut et en bas */
+.couverture {{ page: couverture; height: {HAUTEUR_PAGE}mm; overflow: hidden; padding: 2.3mm 12mm 0; text-align: center; color: #eef1fb;
+  display: flex; flex-direction: column; justify-content: center;
+  /* les 2.3 mm en haut compensent la place réservée aux jambages de la dernière ligne : le blanc est le même en haut et en bas */
   background: radial-gradient(ellipse at 70% 0%, #5065a0 0%, #33427a 45%, #252f58 100%); }}
 .couverture .surtitre {{ font-family: "Skranji"; font-weight: 700; font-size: 10pt; color: #b9d0ea; }}
 .couverture .titre-livre {{ font-family: "Eagle Lake"; font-size: 28pt; line-height: 1.05; color: #ffffff;
