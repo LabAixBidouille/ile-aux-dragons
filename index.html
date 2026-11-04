@@ -88,6 +88,8 @@
 
 
 
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>L'île aux dragons</title>
@@ -247,8 +249,8 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   text-shadow: 3px 3px 0 #1a2350, 0 0 22px rgba(127, 163, 200, 0.55);
   margin: 0.15em 0 0.1em;
 }
-/* « dragons » : rouge clair du pull d'Anna, ombre blanche */
-.garde .grand-titre span { color: var(--pull-clair); text-shadow: 3px 3px 0 #fff, 0 0 22px rgba(127, 163, 200, 0.55); }
+/* « dragons » : rouge clair du pull d’Anna, ombre dorée */
+.garde .grand-titre span { color: var(--pull-clair); text-shadow: 3px 3px 0 var(--or), 0 0 22px rgba(127, 163, 200, 0.55); }
 .garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: #fff; }
 .garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #e2e7f6; }
 /* Commencer : le mot entre deux traits bleu glace, précédé de l'œuf de dragon qui tremble au survol */
@@ -364,13 +366,15 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .de .choix .relance { color: #b9c4e6; font-size: 0.95em; }
 .suite { margin-top: 0.8em; }
 
-/* Séparateur : aligné à gauche, un petit œuf de dragon suivi d'un trait bleu glace effilé, comme sur la
-   couverture ; centré sur la page de contexte, dont le texte est centré */
-.separateur { display: flex; align-items: center; justify-content: flex-start; gap: 0.3em; margin: 1.5em 0 1.1em; }
+/* Séparateur : le motif du bouton Commencer, l'œuf entre deux traits bleu glace, aligné sur la gauche du
+   texte (centré sur la page de contexte). L'œuf tremble quand on survole un bouton Poursuis ou un choix. */
+.separateur { display: flex; align-items: center; justify-content: flex-start; gap: 0.35em; margin: 1.5em 0 1.1em; }
+.separateur::before, .separateur::after { content: ""; flex: none; width: 4.5em; height: 0.9em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M118 7 C80 1.5 40 4.5 8 7 C40 9.5 80 12.5 118 7 Z' fill='%237fa3c8'/%3E%3Ccircle cx='5' cy='7' r='3' fill='%237fa3c8'/%3E%3C/svg%3E") no-repeat center / contain; }
+.separateur::after { transform: scaleX(-1); }
 .separateur .embleme { flex: none; width: 2.1em; height: 2.1em; background: url("images/oeuf.png") no-repeat center / contain; }
-.separateur::after { content: ""; width: 6.5em; height: 0.8em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M2 7 C40 1.5 80 4.5 112 7 C80 9.5 40 12.5 2 7 Z' fill='%237fa3c8'/%3E%3Ccircle cx='115' cy='7' r='3' fill='%237fa3c8'/%3E%3C/svg%3E") no-repeat center / contain; }
+.texte:has(.choix tw-link:hover) .separateur .embleme,
+.texte:has(.choix .enchantment-link:hover) .separateur .embleme { animation: tremble 0.12s linear infinite; }
 .contexte .separateur { justify-content: center; }
-.contexte .separateur::before { content: ""; width: 6.5em; height: 0.8em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M2 7 C40 1.5 80 4.5 112 7 C80 9.5 40 12.5 2 7 Z' fill='%237fa3c8'/%3E%3Ccircle cx='115' cy='7' r='3' fill='%237fa3c8'/%3E%3C/svg%3E") no-repeat center / contain; transform: scaleX(-1); }
 
 /* Renvoi seul : un bouton bleu glace, une flèche rouge tuque qui avance au survol */
 .elan { align-items: flex-start; margin-top: 1.6em; }
