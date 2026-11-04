@@ -77,6 +77,9 @@
 
 
 
+
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>L'île aux dragons</title>
@@ -93,8 +96,8 @@
 @font-face { font-family: "Literata"; font-style: normal; font-weight: 200 900; font-display: swap; src: url("fonts/Literata.woff2") format("woff2"); }
 @font-face { font-family: "Literata"; font-style: italic; font-weight: 200 900; font-display: swap; src: url("fonts/Literata-i.woff2") format("woff2"); }
 
-/* Livre jeunesse d'aventure : la nuit bleue de l'île pour la couverture et le moment du tirage, la page
-   blanche pour la lecture, l'or et la braise de Croquemou pour les étiquettes et les boutons.
+/* Livre jeunesse d'aventure : la page blanche partout, la nuit bleue de l'île pour le moment du tirage,
+   le rouge de la tuque d'Anna, l'orange de Croquemou et le bleu de la glace pour les touches de couleur, l'or et la braise de Croquemou pour les étiquettes et les boutons.
    Titres en Eagle Lake (carte au trésor), étiquettes et boutons en Skranji (aventure), texte en
    Alegreya (livre de contes), encart du tirage en Literata. */
 :root {
@@ -109,6 +112,13 @@
   --encre: #2a2c3d;
   --gris: #6a6e80;
   --papier: #ffffff;
+  /* Couleurs prises aux planches et à Anna */
+  --tuque: #c8322a;
+  --tuque-fonce: #8f1f1c;
+  --croquemou: #e8862a;
+  --peche: #f6c992;
+  --glace: #7fa3c8;
+  --neige: #e3ecf6;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); }
 tw-story {
@@ -119,8 +129,7 @@ tw-story {
 }
 tw-passage { max-width: 1140px; margin: 0 auto; }
 
-/* Pages de lecture : le texte à gauche, l'illustration à droite comme une photo collée, qui suit le
-   défilement */
+/* Pages de lecture : le texte à gauche, l'illustration à droite, qui suit le défilement */
 .page {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -131,39 +140,48 @@ tw-passage { max-width: 1140px; margin: 0 auto; }
 .cote { position: sticky; top: 1.5em; margin-top: 1.5em; }
 .illustration { display: flex; flex-direction: column; gap: 1.6em; }
 .halo { display: block; }
+/* Le cadre épouse la planche : l'image garde ses proportions et n'est jamais étirée dans une boîte plus large */
 .illustration img {
   display: block;
-  width: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
   max-height: 86vh;
-  object-fit: contain;
-  border: 8px solid #fff;
-  border-radius: 6px;
-  box-shadow: 0 8px 22px rgba(36, 48, 90, 0.3);
-  transform: rotate(1.5deg);
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px -12px rgba(36, 48, 90, 0.45);
 }
-.halo:nth-child(2) img { transform: rotate(-1.5deg); }
 .page:not(:has(.cote)) { grid-template-columns: minmax(0, 38em); justify-content: center; }
 @media (max-width: 800px) {
   .page { grid-template-columns: minmax(0, 1fr); gap: 1.6em; }
   .cote { position: static; order: -1; margin-top: 0; }
-  .illustration img { transform: none; }
 }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Titres de chapitre : une étiquette orange penchée, le titre en lettres de carte au trésor */
+/* Titres de chapitre : le numéro dans une pastille rouge tuque, le titre en lettres de carte au trésor */
 .chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1em; line-height: 1.1; }
 .chapitre .numero {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 0.95em;
+  color: var(--gris);
+  margin-bottom: 0.35em;
+}
+.chapitre .numero b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9em;
+  height: 1.9em;
+  border-radius: 50%;
+  background: var(--tuque);
   color: #fff;
-  background: var(--braise);
-  padding: 0.12em 0.9em 0.08em;
-  border-radius: 8px;
-  transform: rotate(-3deg);
-  margin-bottom: 0.5em;
+  font-weight: 700;
+  font-size: 1.05em;
 }
 .chapitre .titre {
   display: block;
@@ -174,9 +192,9 @@ tw-story { overflow: clip; }
   color: var(--nuit);
 }
 
-/* Page de garde : la seule page sur fond de nuit */
+/* Page de garde : la seule page sur fond de nuit, un bleu un peu plus clair que celui de l'encart */
 html:has(.garde), html:has(.garde) body, tw-story:has(.garde) {
-  background: radial-gradient(ellipse at 70% 0%, var(--nuit-clair) 0%, var(--nuit) 45%, var(--nuit-fonce) 100%) fixed;
+  background: radial-gradient(ellipse at 70% 0%, #5065a0 0%, #33427a 45%, #252f58 100%) fixed;
   color: #eef1fb;
 }
 tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
@@ -197,54 +215,73 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 }
 .garde-image img {
   display: block;
-  width: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
   max-height: 84vh;
-  object-fit: contain;
-  border: 8px solid #fff;
-  border-radius: 6px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-  transform: rotate(-2deg);
+  margin: 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.5);
 }
-.garde-texte { display: flex; flex-direction: column; align-items: center; gap: clamp(0.9em, 2.6vh, 1.5em); text-align: center; }
+.garde-texte { display: flex; flex-direction: column; align-items: center; gap: clamp(0.9em, 2.6vh, 1.4em); text-align: center; }
 .garde-entete { display: flex; flex-direction: column; align-items: center; }
 @media (max-width: 800px) {
   .garde { min-height: 0; }
   .garde-corps { grid-template-columns: minmax(0, 1fr); gap: 2em; }
-  .garde-image img { transform: none; }
 }
-.garde .surtitre { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1em; color: var(--or-clair); }
+.garde .surtitre { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1em; color: #b9d0ea; }
 .garde .grand-titre {
   font-family: "Eagle Lake", Georgia, serif;
   font-weight: 400;
-  font-size: clamp(2.3em, 7vh, 3.4em);
+  font-size: clamp(2.3em, 7vh, 3.3em);
   line-height: 1.05;
   color: #fff;
-  text-shadow: 3px 3px 0 var(--braise), 6px 6px 0 var(--nuit-fonce);
   margin: 0.15em 0 0.1em;
 }
-.garde .grand-titre span { color: var(--or); }
-.garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: var(--or); }
-.garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #dfe4f5; }
-/* Commencer : un gros bouton braise, légèrement penché */
+.garde .grand-titre span { color: var(--croquemou); }
+.garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: #fff; }
+.garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #e2e7f6; }
+/* Commencer : le mot entre deux traits bleu glace, précédé de l'œuf de dragon qui tremble au survol */
+.garde .commencer { display: flex; align-items: center; justify-content: center; gap: 0.7em; }
+.garde .commencer .trait { flex: none; width: 4.5em; height: 0.9em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M118 7 C80 1.5 40 4.5 8 7 C40 9.5 80 12.5 118 7 Z' fill='%23b9d0ea'/%3E%3Ccircle cx='5' cy='7' r='3' fill='%23b9d0ea'/%3E%3C/svg%3E") no-repeat center / contain; }
+.garde .commencer .trait.droite { transform: scaleX(-1); }
 .garde .commencer tw-link, .garde .commencer .enchantment-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  white-space: nowrap;
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
-  font-size: 1.3em;
+  font-size: 1.45em;
   color: #fff;
-  background: var(--braise);
-  padding: 0.3em 1.5em 0.25em;
-  border-radius: 14px;
-  box-shadow: 0 5px 0 var(--braise-fonce);
-  transform: rotate(-1.5deg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: color 0.2s ease;
 }
-.garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover {
+.garde .commencer tw-link::before, .garde .commencer .enchantment-link::before {
+  content: "";
+  flex: none;
+  width: 2.2em;
+  height: 2.2em;
+  background: url("images/oeuf.png") no-repeat center / contain;
+}
+.garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover { color: var(--peche); }
+.garde .commencer tw-link:hover::before, .garde .commencer .enchantment-link:hover::before { animation: tremble 0.12s linear 4; }
+@media (max-width: 600px) {
+  .garde .commencer .trait { width: 2.4em; }
+  .garde .commencer tw-link, .garde .commencer .enchantment-link { font-size: 1.25em; }
+}
+.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6em 1.2em; }
+.garde .secondaires tw-link, .garde .secondaires .enchantment-link {
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
   color: #fff;
-  transform: rotate(0deg) translateY(2px);
-  box-shadow: 0 3px 0 var(--braise-fonce);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(246, 201, 146, 0.7);
+  border-radius: 0;
+  padding: 0;
 }
-.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7em 1em; }
+.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--peche); }
 
 /* Petits boutons secondaires */
 .secondaires tw-link, .secondaires .enchantment-link {
@@ -259,8 +296,6 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   background: var(--papier);
 }
 .secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); background: var(--or-clair); }
-.garde .secondaires tw-link, .garde .secondaires .enchantment-link { color: var(--or-clair); background: transparent; border-color: rgba(242, 178, 91, 0.6); }
-.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--nuit-fonce); background: var(--or); }
 
 /* Lien Couverture */
 .retour { margin: 0 auto 1.2em; text-align: left; }
@@ -326,26 +361,31 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   filter: drop-shadow(0 0 6px rgba(242, 178, 91, 0.9));
 }
 
-/* Renvoi seul : un bouton doré penché */
+/* Renvoi seul : un bouton bleu glace, une flèche rouge tuque qui avance au survol */
 .elan { align-items: flex-start; margin-top: 1.6em; }
 .choix.elan tw-link, .choix.elan .enchantment-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
-  font-size: 1.1em;
-  color: var(--nuit-fonce);
-  background: var(--or);
-  padding: 0.3em 1.3em 0.2em;
+  font-size: 1.02em;
+  color: var(--nuit);
+  background: var(--neige);
+  padding: 0.4em 1.3em 0.35em;
   border-radius: 12px;
-  box-shadow: 0 4px 0 var(--or-fonce);
-  transform: rotate(-1deg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-bottom: 3px solid var(--glace);
+  transition: background 0.18s ease;
 }
-.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover {
-  color: var(--nuit-fonce);
-  transform: rotate(0deg) translateY(2px);
-  box-shadow: 0 2px 0 var(--or-fonce);
+.choix.elan tw-link::after, .choix.elan .enchantment-link::after {
+  content: "→";
+  font-family: "Alegreya", Georgia, serif;
+  font-weight: 700;
+  color: var(--tuque);
+  transition: transform 0.18s ease;
 }
+.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover { color: var(--nuit); background: #d3e1f0; }
+.choix.elan tw-link:hover::after, .choix.elan .enchantment-link:hover::after { transform: translateX(4px); }
 
 /* L'œuf de dragon de Manon : il tremble, éclot et laisse voir le nombre tiré. L'image est carrée et
    l'œuf est en son centre : il est centré dans sa colonne et dans la hauteur de l'encart. Le résultat
@@ -533,7 +573,7 @@ document.addEventListener('keydown', function (evenement) {
 });
 </script><tw-passagedata pid="1" name="Bouton couverture" tags="header" position="150,0" size="100,100">(unless: (a: &quot;Page de garde&quot;, &quot;L&#x27;arbre de l&#x27;histoire&quot;, &quot;Comment est née cette histoire&quot;) contains (passage:)&#x27;s name)[&lt;div class=&quot;retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/div&gt;]</tw-passagedata><tw-passagedata pid="2" name="Page de garde" tags="" position="300,0" size="100,100">&lt;div class=&quot;garde&quot;&gt;&lt;div class=&quot;garde-corps&quot;&gt;&lt;div class=&quot;garde-image&quot;&gt;&lt;img src=&quot;images/couverture.jpg&quot; alt=&quot;Anna, tuque rouge et crosse de hockey, debout près de Croquemou face au château noir&quot;&gt;&lt;/div&gt;&lt;div class=&quot;garde-texte&quot;&gt;&lt;div class=&quot;garde-entete&quot;&gt;&lt;span class=&quot;surtitre&quot;&gt;Une histoire dont le lecteur est le héros&lt;/span&gt;&lt;div class=&quot;grand-titre&quot;&gt;L&#x27;île aux &lt;span&gt;dragons&lt;/span&gt;&lt;/div&gt;&lt;span class=&quot;nom-auteur&quot;&gt;Louisa et June&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;synopsis&quot;&gt;Anna a quatorze ans, une tuque rouge et une crosse de hockey dont elle ne se sépare jamais. Quand sa grand-mère l&#x27;invite à passer l&#x27;hiver sur l&#x27;île où elle est née, elle quitte la neige de Montréal pour une terre que les cartes ne montrent pas.
 
-Là-bas, les dragons vivent enchaînés, un sorcier règne depuis son château noir, et le dernier dragon libre, Croquemou, déteste les humains. Anna avait promis de ne rien changer… Lance le dé et découvre si elle tiendra sa promesse !&lt;/div&gt;&lt;div class=&quot;commencer&quot;&gt;[[Commencer l&#x27;histoire-&gt;Prologue]]&lt;/div&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Comment est née cette histoire-&gt;Comment est née cette histoire]] [[L&#x27;arbre de l&#x27;histoire-&gt;L&#x27;arbre de l&#x27;histoire]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="3" name="Comment est née cette histoire" tags="" position="450,0" size="100,100">&lt;div class=&quot;contexte&quot;&gt;&lt;span class=&quot;lien-retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/span&gt;
+Là-bas, les dragons vivent enchaînés, un sorcier règne depuis son château noir, et le dernier dragon libre, Croquemou, déteste les humains. Anna avait promis de ne rien changer… Lance le dé et découvre si elle tiendra sa promesse !&lt;/div&gt;&lt;div class=&quot;commencer&quot;&gt;&lt;span class=&quot;trait&quot;&gt;&lt;/span&gt;[[Commencer l&#x27;histoire-&gt;Prologue]]&lt;span class=&quot;trait droite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Comment est née cette histoire-&gt;Comment est née cette histoire]] [[L&#x27;arbre de l&#x27;histoire-&gt;L&#x27;arbre de l&#x27;histoire]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="3" name="Comment est née cette histoire" tags="" position="450,0" size="100,100">&lt;div class=&quot;contexte&quot;&gt;&lt;span class=&quot;lien-retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/span&gt;
 &lt;h1&gt;Comment est née cette histoire&lt;/h1&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;contexte-texte&quot;&gt;En octobre 2026, le L.A.B a animé l’atelier « La quête du curry, une histoire dont tu es le héros » dans les bibliothèques Méjanes d’Aix-en-Provence. Les enfants ont été accompagnés dans la création d’un récit complet, depuis l’invention des personnages jusqu’à la construction d’une intrigue reliant les différentes étapes de leur aventure.
 
 Nous leur avons proposé d’introduire une part de hasard dans leur récit. Le résultat d’un lancer de dé pouvait modifier le déroulement de certains passages et conduire le lecteur vers un chapitre ou un autre.
@@ -552,7 +592,7 @@ Puis un sorcier arriva sur l&#x27;île. Personne ne savait d&#x27;où il venait.
 
 Il était très laid, avec un nez crochu et un chapeau tout tordu. Mais ce n&#x27;était pas son apparence qui effrayait les habitants : d&#x27;un geste, il pouvait faire voler les objets, arracher les portes et soulever des rochers. Depuis son arrivée, ses gardes parcouraient les rues et les habitants n&#x27;osaient plus lui résister.
 
-Dans les falaises vivait un dragon nommé Croquemou. C&#x27;était un dragon adulte de trois mètres de haut, orange, avec des taches jaunes sur la queue. Caché parmi les rochers, il regardait souvent vers la forêt. Il lui arrivait d&#x27;entendre des appels au loin, mais il n&#x27;osait plus s&#x27;approcher du village.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 1-&gt;Chapitre 1]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/prologue.jpg&quot; alt=&quot;L&#x27;île aux dragons&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="6" name="Chapitre 1" tags="" position="900,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 1&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La neige de Montréal&lt;/span&gt;&lt;/h1&gt;Au même moment, très loin de là, il neigeait sur Montréal. Anna avait quatorze ans. Elle aimait le froid sec qui pique les joues, le sirop d&#x27;érable versé sur la neige, et par-dessus tout le hockey. Sur la patinoire du parc, aucun garçon de sa classe ne réussissait à lui prendre la rondelle. Elle était rapide, adroite, et elle avait toujours un coup d&#x27;avance.
+Dans les falaises vivait un dragon nommé Croquemou. C&#x27;était un dragon adulte de trois mètres de haut, orange, avec des taches jaunes sur la queue. Caché parmi les rochers, il regardait souvent vers la forêt. Il lui arrivait d&#x27;entendre des appels au loin, mais il n&#x27;osait plus s&#x27;approcher du village.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 1-&gt;Chapitre 1]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/prologue.jpg&quot; alt=&quot;L&#x27;île aux dragons&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="6" name="Chapitre 1" tags="" position="900,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;1&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La neige de Montréal&lt;/span&gt;&lt;/h1&gt;Au même moment, très loin de là, il neigeait sur Montréal. Anna avait quatorze ans. Elle aimait le froid sec qui pique les joues, le sirop d&#x27;érable versé sur la neige, et par-dessus tout le hockey. Sur la patinoire du parc, aucun garçon de sa classe ne réussissait à lui prendre la rondelle. Elle était rapide, adroite, et elle avait toujours un coup d&#x27;avance.
 
 Ce soir-là, en rentrant, elle trouva sa mère assise dans la cuisine, une lettre à la main.
 
@@ -572,7 +612,7 @@ Anna hésita. Elle aurait voulu poser mille questions, mais le regard inquiet de
 
 « Je te le promets », murmura-t-elle.
 
-Deux jours plus tard, Anna embarqua sur un petit bateau, avec son sac, sa tuque rouge et sa crosse de hockey, dont elle ne se séparait jamais.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 2-&gt;Chapitre 2]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-01.jpg&quot; alt=&quot;La neige de Montréal&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="7" name="Chapitre 2" tags="" position="1050,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 2&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le dragon des falaises&lt;/span&gt;&lt;/h1&gt;Après trois jours de mer, l&#x27;île apparut dans la brume : des falaises grises, une forêt sombre et, tout en haut, un château noir. Anna sortit son téléphone pour prévenir sa mère de son arrivée, mais il ne captait plus aucun réseau. Elle le rangea dans sa poche et sauta sur le quai, sa crosse sur l&#x27;épaule.
+Deux jours plus tard, Anna embarqua sur un petit bateau, avec son sac, sa tuque rouge et sa crosse de hockey, dont elle ne se séparait jamais.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 2-&gt;Chapitre 2]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-01.jpg&quot; alt=&quot;La neige de Montréal&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="7" name="Chapitre 2" tags="" position="1050,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;2&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le dragon des falaises&lt;/span&gt;&lt;/h1&gt;Après trois jours de mer, l&#x27;île apparut dans la brume : des falaises grises, une forêt sombre et, tout en haut, un château noir. Anna sortit son téléphone pour prévenir sa mère de son arrivée, mais il ne captait plus aucun réseau. Elle le rangea dans sa poche et sauta sur le quai, sa crosse sur l&#x27;épaule.
 
 Le port était presque désert. Un pêcheur qui rangeait ses filets leva les yeux vers le château, puis rentra précipitamment chez lui. Au loin, un cri grave traversa la brume. Anna se figea. Elle n&#x27;avait jamais entendu un tel bruit.
 
@@ -584,7 +624,7 @@ Anna recula d&#x27;un pas. « Je ne veux de mal à personne ! »
 
 « C&#x27;est ce qu&#x27;ils disent tous », cracha le dragon. Il déploya ses ailes et disparut dans les falaises.
 
-Anna resta seule sur le quai, le cœur battant. Pourquoi ce dragon la détestait-il, alors qu&#x27;elle venait à peine d&#x27;arriver ?&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche l’œuf de dragon pour découvrir ce qu&#x27;Anna va trouver sur l&#x27;île :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;4&lt;/b&gt;[[poursuis au chapitre 3-&gt;Chapitre 3]]&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;2&lt;/b&gt;[[poursuis au chapitre 4-&gt;Chapitre 4]]&lt;/span&gt;&lt;span class=&quot;relance&quot;&gt;Un autre nombre : touche de nouveau l’œuf.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;oeuf&quot; type=&quot;button&quot; aria-label=&quot;Toucher l’œuf de dragon pour lancer le dé&quot;&gt;&lt;span class=&quot;coque&quot;&gt;&lt;/span&gt;&lt;span class=&quot;dedans&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-02.jpg&quot; alt=&quot;Le dragon des falaises&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="Chapitre 3" tags="" position="1200,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 3&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le jeune forgeron&lt;/span&gt;&lt;/h1&gt;En montant vers le village, Anna entendit des coups de marteau. Dans une forge, un garçon de son âge frappait une barre de fer rouge.
+Anna resta seule sur le quai, le cœur battant. Pourquoi ce dragon la détestait-il, alors qu&#x27;elle venait à peine d&#x27;arriver ?&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche l’œuf de dragon pour découvrir ce qu&#x27;Anna va trouver sur l&#x27;île :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;4&lt;/b&gt;[[poursuis au chapitre 3-&gt;Chapitre 3]]&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;2&lt;/b&gt;[[poursuis au chapitre 4-&gt;Chapitre 4]]&lt;/span&gt;&lt;span class=&quot;relance&quot;&gt;Un autre nombre : touche de nouveau l’œuf.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;oeuf&quot; type=&quot;button&quot; aria-label=&quot;Toucher l’œuf de dragon pour lancer le dé&quot;&gt;&lt;span class=&quot;coque&quot;&gt;&lt;/span&gt;&lt;span class=&quot;dedans&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-02.jpg&quot; alt=&quot;Le dragon des falaises&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="8" name="Chapitre 3" tags="" position="1200,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;3&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le jeune forgeron&lt;/span&gt;&lt;/h1&gt;En montant vers le village, Anna entendit des coups de marteau. Dans une forge, un garçon de son âge frappait une barre de fer rouge.
 
 « Tu es nouvelle, dit-il sans lever les yeux. Fais attention à toi. »
 
@@ -614,7 +654,7 @@ Dehors, des pas résonnèrent. Émile se tut jusqu&#x27;à ce qu&#x27;ils se soi
 
 Il hésita, puis ajouta : « Pourtant, quand il se met en colère, sa magie lui échappe parfois. Une fois, les pierres qu&#x27;il faisait voler ont brisé les fenêtres de sa propre tour. »
 
-Anna regarda les chaînes. Elle pensa à sa mère, partie de l&#x27;île avec un bébé dans les bras.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 5-&gt;Chapitre 5]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-03.jpg&quot; alt=&quot;Le jeune forgeron&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="Chapitre 4" tags="" position="1350,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 4&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La forêt des chaînes&lt;/span&gt;&lt;/h1&gt;Anna prit un raccourci par la forêt. Très vite, elle entendit des gémissements entre les arbres. Elle avança sans bruit et s&#x27;arrêta, horrifiée.
+Anna regarda les chaînes. Elle pensa à sa mère, partie de l&#x27;île avec un bébé dans les bras.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 5-&gt;Chapitre 5]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-03.jpg&quot; alt=&quot;Le jeune forgeron&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="9" name="Chapitre 4" tags="" position="1350,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;4&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La forêt des chaînes&lt;/span&gt;&lt;/h1&gt;Anna prit un raccourci par la forêt. Très vite, elle entendit des gémissements entre les arbres. Elle avança sans bruit et s&#x27;arrêta, horrifiée.
 
 Des dizaines de dragons étaient attachés aux troncs par de lourdes chaînes. Sous les branches, leurs écailles bleues, cuivrées ou violettes semblaient ternies par la boue. Certains avaient les ailes déchirées ; d&#x27;autres, épuisés, ne levaient même plus la tête. À chaque mouvement, les chaînes raclaient l&#x27;écorce.
 
@@ -658,7 +698,7 @@ Anna lui raconta alors sa rencontre sur le quai.
 
 « C&#x27;était Croquemou, dit Émile. C&#x27;est le dernier dragon encore libre. »
 
-Anna serra les poings. Elle comprenait maintenant pourquoi Croquemou se méfiait des humains.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 5-&gt;Chapitre 5]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-04.jpg&quot; alt=&quot;La forêt des chaînes&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="Chapitre 5" tags="" position="1500,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 5&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le dernier dragon libre&lt;/span&gt;&lt;/h1&gt;Ce soir-là, chez sa grand-mère, Anna ne trouva pas le sommeil. Tout cela était injuste. Sa grand-mère lui prit la main.
+Anna serra les poings. Elle comprenait maintenant pourquoi Croquemou se méfiait des humains.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 5-&gt;Chapitre 5]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-04.jpg&quot; alt=&quot;La forêt des chaînes&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="10" name="Chapitre 5" tags="" position="1500,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;5&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le dernier dragon libre&lt;/span&gt;&lt;/h1&gt;Ce soir-là, chez sa grand-mère, Anna ne trouva pas le sommeil. Tout cela était injuste. Sa grand-mère lui prit la main.
 
 « Ta mère a quitté l&#x27;île parce qu&#x27;elle refusait d&#x27;aider le sorcier, murmura-t-elle. Un soir, elle avait caché un jeune dragon bleu pour le soustraire aux gardes. Je me souviens bien de lui, avec sa petite entaille au bout d&#x27;une oreille. Quand ils l&#x27;ont appris, ils sont venus frapper à notre porte. Elle est partie avec toi avant leur retour. »
 
@@ -672,13 +712,13 @@ Le dragon se débattit, poussa un cri qui fit trembler les vitres. Les autres fi
 
 Au moment de disparaître, le dragon tourna la tête. Ses yeux jaunes croisèrent ceux d&#x27;Anna.
 
-Anna enfila sa tuque et prit sa crosse. Elle allait passer à l&#x27;action. Les mots de sa mère lui semblaient bien loin. Sa rage était désormais plus forte que sa raison.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche l’œuf de dragon pour savoir comment Anna entre dans le château :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;6&lt;/b&gt;[[poursuis au chapitre 6-&gt;Chapitre 6]]&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;1&lt;/b&gt;[[poursuis au chapitre 7-&gt;Chapitre 7]]&lt;/span&gt;&lt;span class=&quot;relance&quot;&gt;Un autre nombre : touche de nouveau l’œuf.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;oeuf&quot; type=&quot;button&quot; aria-label=&quot;Toucher l’œuf de dragon pour lancer le dé&quot;&gt;&lt;span class=&quot;coque&quot;&gt;&lt;/span&gt;&lt;span class=&quot;dedans&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-05.jpg&quot; alt=&quot;Le dernier dragon libre&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="Chapitre 6" tags="" position="1650,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 6&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le passage des cuisines&lt;/span&gt;&lt;/h1&gt;Anna décida d&#x27;agir seule et de se faufiler dans le château. Elle quitta la maison de sa grand-mère et traversa le village endormi. Devant elle, la silhouette noire du château se dressait au sommet de la colline.
+Anna enfila sa tuque et prit sa crosse. Elle allait passer à l&#x27;action. Les mots de sa mère lui semblaient bien loin. Sa rage était désormais plus forte que sa raison.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche l’œuf de dragon pour savoir comment Anna entre dans le château :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;6&lt;/b&gt;[[poursuis au chapitre 6-&gt;Chapitre 6]]&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;1&lt;/b&gt;[[poursuis au chapitre 7-&gt;Chapitre 7]]&lt;/span&gt;&lt;span class=&quot;relance&quot;&gt;Un autre nombre : touche de nouveau l’œuf.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;oeuf&quot; type=&quot;button&quot; aria-label=&quot;Toucher l’œuf de dragon pour lancer le dé&quot;&gt;&lt;span class=&quot;coque&quot;&gt;&lt;/span&gt;&lt;span class=&quot;dedans&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-05.jpg&quot; alt=&quot;Le dernier dragon libre&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="Chapitre 6" tags="" position="1650,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;6&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le passage des cuisines&lt;/span&gt;&lt;/h1&gt;Anna décida d&#x27;agir seule et de se faufiler dans le château. Elle quitta la maison de sa grand-mère et traversa le village endormi. Devant elle, la silhouette noire du château se dressait au sommet de la colline.
 
 Elle gravit le chemin dans la nuit, puis fit le tour des remparts. Derrière les cuisines, elle repéra une petite porte par où on sortait les ordures. Elle attendit, cachée dans l&#x27;ombre. Lorsque la porte s&#x27;ouvrit sur une jeune femme portant un seau d&#x27;eau, Anna en profita pour franchir le seuil, aussi silencieuse qu&#x27;un renard sur la neige.
 
 À l&#x27;intérieur, les couloirs sentaient la pierre froide. Deux gardes approchaient. Anna se glissa derrière une armure et retint son souffle. L&#x27;un d&#x27;eux s&#x27;arrêta tout près d&#x27;elle ; elle aperçut ses bottes entre les jambes de l&#x27;armure. Puis son compagnon l&#x27;appela et les pas s&#x27;éloignèrent.
 
-Anna attendit encore un moment avant de sortir de sa cachette. Elle suivit les grognements qui montaient de la cour.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-06.jpg&quot; alt=&quot;Le passage des cuisines&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="Chapitre 7" tags="" position="1800,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 7&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le portail brisé&lt;/span&gt;&lt;/h1&gt;Anna courut à la forge. Émile était encore là, avec trois apprentis.
+Anna attendit encore un moment avant de sortir de sa cachette. Elle suivit les grognements qui montaient de la cour.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-06.jpg&quot; alt=&quot;Le passage des cuisines&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="Chapitre 7" tags="" position="1800,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;7&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le portail brisé&lt;/span&gt;&lt;/h1&gt;Anna courut à la forge. Émile était encore là, avec trois apprentis.
 
 « Ils ont pris Croquemou, dit-elle. Je vais le chercher. Vous venez ? »
 
@@ -690,7 +730,7 @@ Des voix s&#x27;élevèrent aussitôt de l&#x27;autre côté du portail. Les app
 
 « Vas-y, souffla Émile. On retient les gardes. »
 
-Anna se faufila dans la cour.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-07.jpg&quot; alt=&quot;Le portail brisé&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="Chapitre 8" tags="" position="1950,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 8&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La cage de Croquemou&lt;/span&gt;&lt;/h1&gt;Au milieu de la cour, Croquemou était enfermé dans une cage de fer. Son aile était repliée contre lui et des morceaux de filet pendaient encore à ses écailles. Il tirait sur les barreaux, mais ils ne cédaient pas.
+Anna se faufila dans la cour.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-07.jpg&quot; alt=&quot;Le portail brisé&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="Chapitre 8" tags="" position="1950,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;8&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La cage de Croquemou&lt;/span&gt;&lt;/h1&gt;Au milieu de la cour, Croquemou était enfermé dans une cage de fer. Son aile était repliée contre lui et des morceaux de filet pendaient encore à ses écailles. Il tirait sur les barreaux, mais ils ne cédaient pas.
 
 Quand il vit Anna, il montra les dents.
 
@@ -704,7 +744,7 @@ Le dragon la fixa longtemps, sans rien dire. Puis une voix grinçante résonna d
 
 Le sorcier s&#x27;avançait, son chapeau tordu de travers. Son pied se prit dans le bord de sa robe ; il trébucha, puis se redressa aussitôt en lançant un regard furieux à Anna. D&#x27;un geste, il fit s&#x27;envoler un trousseau de clés, qui vint tourner au-dessus de sa tête. « Tu veux ces clés ? Viens donc les chercher. »
 
-Anna serra sa crosse. Le sorcier était puissant, mais elle se souvint des paroles d&#x27;Émile : quand il se mettait en colère, sa magie pouvait lui échapper.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche l’œuf de dragon pour découvrir comment Anna affronte le sorcier :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;Pair&lt;/b&gt;[[poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;Impair&lt;/b&gt;[[poursuis au chapitre 10-&gt;Chapitre 10]]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;oeuf&quot; type=&quot;button&quot; aria-label=&quot;Toucher l’œuf de dragon pour lancer le dé&quot;&gt;&lt;span class=&quot;coque&quot;&gt;&lt;/span&gt;&lt;span class=&quot;dedans&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-08.jpg&quot; alt=&quot;La cage de Croquemou&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="Chapitre 9" tags="" position="2100,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 9&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le lancer d&#x27;Anna&lt;/span&gt;&lt;/h1&gt;« Vous ne savez faire voler que de petites choses ? » demanda Anna.
+Anna serra sa crosse. Le sorcier était puissant, mais elle se souvint des paroles d&#x27;Émile : quand il se mettait en colère, sa magie pouvait lui échapper.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche l’œuf de dragon pour découvrir comment Anna affronte le sorcier :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;Pair&lt;/b&gt;[[poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;Impair&lt;/b&gt;[[poursuis au chapitre 10-&gt;Chapitre 10]]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;oeuf&quot; type=&quot;button&quot; aria-label=&quot;Toucher l’œuf de dragon pour lancer le dé&quot;&gt;&lt;span class=&quot;coque&quot;&gt;&lt;/span&gt;&lt;span class=&quot;dedans&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-08.jpg&quot; alt=&quot;La cage de Croquemou&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="Chapitre 9" tags="" position="2100,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;9&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Le lancer d&#x27;Anna&lt;/span&gt;&lt;/h1&gt;« Vous ne savez faire voler que de petites choses ? » demanda Anna.
 
 Le sorcier devint rouge de colère. « Petites choses ? Regarde donc ! »
 
@@ -714,7 +754,7 @@ Anna posa un caillou sur le sol, comme une rondelle sur la glace. Elle prit son 
 
 Le sorcier poussa un cri. Surpris, il lâcha tout ce qu&#x27;il portait. L&#x27;enclume, la charrette et le tonneau s&#x27;écrasèrent autour de lui, et il disparut sous un nuage de poussière.
 
-Anna ramassa les clés et ouvrit la cage.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 11-&gt;Chapitre 11]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-09.jpg&quot; alt=&quot;Le lancer d&#x27;Anna&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="Chapitre 10" tags="" position="2250,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 10&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La cour de glace&lt;/span&gt;&lt;/h1&gt;La nuit était glaciale. Anna remarqua une fontaine dans un coin de la cour et une mince plaque de glace à ses pieds. Elle eut une idée.
+Anna ramassa les clés et ouvrit la cage.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 11-&gt;Chapitre 11]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-09.jpg&quot; alt=&quot;Le lancer d&#x27;Anna&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="Chapitre 10" tags="" position="2250,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;10&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La cour de glace&lt;/span&gt;&lt;/h1&gt;La nuit était glaciale. Anna remarqua une fontaine dans un coin de la cour et une mince plaque de glace à ses pieds. Elle eut une idée.
 
 Elle ouvrit le robinet, puis poussa l&#x27;eau avec sa crosse sur les pavés déjà gelés. Elle surveilla le sorcier tout en attendant que l&#x27;eau gèle à son tour. Amusé, il la regardait faire sans bouger. Bientôt, une surface brillante s&#x27;étendit devant la cage.
 
@@ -722,7 +762,7 @@ Elle ouvrit le robinet, puis poussa l&#x27;eau avec sa crosse sur les pavés dé
 
 Le sorcier se lança à sa poursuite. Ses chaussures pointues glissèrent sur la glace et il s&#x27;accrocha de justesse au bord de la fontaine. Furieux, il agita les bras et fit voler des seaux et des pelles dans tous les sens. Une pelle rebondit contre le mur près de lui ; il dut se baisser pour l&#x27;éviter. Pendant ce temps, Anna esquivait les objets. Habituée à garder l&#x27;équilibre sur la patinoire, elle avançait prudemment sur ses bottes. Le sorcier, lui, s&#x27;étala de tout son long. Le trousseau de clés tomba et glissa jusqu&#x27;à elle.
 
-Anna le ramassa et ouvrit la cage.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 11-&gt;Chapitre 11]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-10.jpg&quot; alt=&quot;La cour de glace&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="Chapitre 11" tags="" position="2400,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 11&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La grande libération&lt;/span&gt;&lt;/h1&gt;Croquemou sortit de la cage et déploya ses ailes. Il regarda Anna, cette fois sans colère.
+Anna le ramassa et ouvrit la cage.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 11-&gt;Chapitre 11]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-10.jpg&quot; alt=&quot;La cour de glace&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="16" name="Chapitre 11" tags="" position="2400,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;11&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La grande libération&lt;/span&gt;&lt;/h1&gt;Croquemou sortit de la cage et déploya ses ailes. Il regarda Anna, cette fois sans colère.
 
 « Je me suis trompé sur toi, dit-il. J&#x27;avais fini par croire que tous les humains étaient nos ennemis. Mais tu m&#x27;as rappelé une époque où nous vivions en harmonie. Les enfants jouaient près de nos nids, et nous partagions le ciel avec les habitants de l&#x27;île. »
 
@@ -744,7 +784,7 @@ Le dragon la regarda, surpris. « Elle m&#x27;a sauvé la vie. Je ne l&#x27;ai 
 
 Anna sourit. Le petit dragon de sa mère avait bien grandi.
 
-Au lever du soleil, il ne restait plus un seul dragon enchaîné sur l&#x27;île.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 12-&gt;Chapitre 12]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-11.jpg&quot; alt=&quot;La grande libération&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="Chapitre 12" tags="" position="2550,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 12&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Tout le peuple dans le ciel&lt;/span&gt;&lt;/h1&gt;Les jours suivants, l&#x27;île changea de visage. Après avoir jugé le sorcier, les habitants le firent quitter l&#x27;île sous bonne garde, les mains toujours immobilisées. Les dragons revinrent se poser sur les falaises, et les habitants osèrent enfin lever la tête vers eux. Émile fondit les chaînes et en fit des cloches, qu&#x27;il accrocha dans tout le village. Leur joyeux tintement résonnait désormais dans les rues, comme une promesse de renouveau.
+Au lever du soleil, il ne restait plus un seul dragon enchaîné sur l&#x27;île.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;choix suite elan&quot;&gt;[[Poursuis au chapitre 12-&gt;Chapitre 12]]&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;cote&quot;&gt;&lt;div class=&quot;illustration&quot;&gt;&lt;span class=&quot;halo&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-11.jpg&quot; alt=&quot;La grande libération&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="Chapitre 12" tags="" position="2550,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;&lt;b&gt;12&lt;/b&gt; Chapitre&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Tout le peuple dans le ciel&lt;/span&gt;&lt;/h1&gt;Les jours suivants, l&#x27;île changea de visage. Après avoir jugé le sorcier, les habitants le firent quitter l&#x27;île sous bonne garde, les mains toujours immobilisées. Les dragons revinrent se poser sur les falaises, et les habitants osèrent enfin lever la tête vers eux. Émile fondit les chaînes et en fit des cloches, qu&#x27;il accrocha dans tout le village. Leur joyeux tintement résonnait désormais dans les rues, comme une promesse de renouveau.
 
 Un matin, les dragons invitèrent les habitants à monter sur leur dos. Tout le village s&#x27;envola avec eux au-dessus de la mer. Les enfants criaient de joie, les grands-parents riaient comme des enfants, et Anna, sur le dos de Croquemou, faisait des loopings en tenant sa tuque d&#x27;une main.
 
