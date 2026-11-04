@@ -242,7 +242,8 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   .garde .commencer .trait { width: 2.4em; }
   .garde .commencer tw-link, .garde .commencer .enchantment-link { font-size: 1.25em; }
 }
-.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6em 1.2em; }
+.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6em 0.8em; }
+/* Soulignés bleu glace ; au survol, ils prennent le style des boutons « Poursuis » */
 .garde .secondaires tw-link, .garde .secondaires .enchantment-link {
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
@@ -250,11 +251,12 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   color: #fff;
   background: transparent;
   border: none;
-  border-bottom: 2px solid rgba(246, 201, 146, 0.7);
-  border-radius: 0;
-  padding: 0;
+  border-bottom: 3px solid var(--glace);
+  border-radius: 12px;
+  padding: 0.3em 0.9em 0.25em;
+  transition: background 0.18s ease, color 0.18s ease;
 }
-.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: #fff; background: transparent; border-bottom-color: var(--pull-clair); }
+.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--nuit); background: var(--neige); }
 
 /* Petits boutons secondaires */
 .secondaires tw-link, .secondaires .enchantment-link {
