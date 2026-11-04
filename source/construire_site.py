@@ -208,6 +208,8 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   font-size: clamp(2.3em, 7vh, 3.3em);
   line-height: 1.05;
   color: #fff;
+  /* Ombre bleutée : un décalage bleu nuit profond et un halo bleu glace */
+  text-shadow: 3px 3px 0 #1a2350, 0 0 22px rgba(127, 163, 200, 0.55);
   margin: 0.15em 0 0.1em;
 }
 .garde .grand-titre span { color: var(--pull-clair); }
