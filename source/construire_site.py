@@ -102,7 +102,7 @@ tw-story {
   line-height: 1.65;
   padding: 4em 2em 4em;
 }
-tw-passage { max-width: 1050px; margin: 0 auto; }
+tw-passage { max-width: 1000px; margin: 0 auto; }
 
 /* Pages de lecture : le texte à gauche dans une colonne de lecture, la planche à droite, collée au texte et
    aussi large que possible ; l'ensemble reste centré dans la page */
