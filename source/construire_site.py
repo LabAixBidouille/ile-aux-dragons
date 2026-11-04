@@ -487,7 +487,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .arbre-tete { text-align: center; margin-bottom: 1.5em; }
 .arbre h1 { margin: 0; }
 .arbre .arbre-sous-titre { display: block; font-style: italic; font-size: 1.1em; color: var(--gris); margin: 0.4em 0 1em; }
-.arbre img { display: block; width: 100%; max-width: 760px; height: auto; margin: 0 auto; }
+.arbre img { display: block; width: 100%; max-width: 1000px; height: auto; margin: 0 auto; }
 
 tw-link, .enchantment-link { color: var(--nuit); font-weight: 700; text-decoration: none; }
 tw-link:hover, .enchantment-link:hover { color: var(--tuque); }

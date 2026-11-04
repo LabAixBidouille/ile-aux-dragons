@@ -25,7 +25,7 @@ OEUF = RACINE / "images" / "oeuf-arbre.png"
 NUIT, TUQUE, GLACE, GLACE_FONCE, OR_OEUF, ENCRE = "#24305a", "#c8322a", "#7fa3c8", "#5f84ad", "#f7b04f", "#2a2c3d"
 # Fond bleu glace clair, pour que l'arbre ne flotte pas sur une page vide
 FOND = "#e3ecf6"
-GAUCHE, LARGEUR, HAUTEUR = 110, 900, 1580
+GAUCHE, LARGEUR, HAUTEUR = -40, 1200, 1580
 L_CASE, H_CASE = 230, 66
 
 CASES = {
