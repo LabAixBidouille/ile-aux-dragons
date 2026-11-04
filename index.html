@@ -80,6 +80,8 @@
 
 
 
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>L'île aux dragons</title>
@@ -116,6 +118,7 @@
   --tuque: #c8322a;
   --tuque-fonce: #8f1f1c;
   --croquemou: #e8862a;
+  --pull-clair: #f06a5c;
   --peche: #f6c992;
   --glace: #7fa3c8;
   --neige: #e3ecf6;
@@ -127,17 +130,17 @@ tw-story {
   line-height: 1.65;
   padding: 4em 1.25em 4em;
 }
-tw-passage { max-width: 1140px; margin: 0 auto; }
+tw-passage { max-width: 1260px; margin: 0 auto; }
 
 /* Pages de lecture : le texte à gauche, l'illustration à droite, qui suit le défilement */
 .page {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
   gap: 3em;
   align-items: start;
 }
 .texte { max-width: 36em; }
-.cote { position: sticky; top: 1.5em; margin-top: 1.5em; }
+.cote { position: sticky; top: 1em; margin-top: 0.5em; }
 .illustration { display: flex; flex-direction: column; gap: 1.6em; }
 .halo { display: block; }
 /* Le cadre épouse la planche : l'image garde ses proportions et n'est jamais étirée dans une boîte plus large */
@@ -146,7 +149,7 @@ tw-passage { max-width: 1140px; margin: 0 auto; }
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 86vh;
+  max-height: 94vh;
   margin: 0 auto;
   border-radius: 16px;
   box-shadow: 0 14px 30px -12px rgba(36, 48, 90, 0.45);
@@ -238,7 +241,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   color: #fff;
   margin: 0.15em 0 0.1em;
 }
-.garde .grand-titre span { color: var(--croquemou); }
+.garde .grand-titre span { color: var(--pull-clair); }
 .garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: #fff; }
 .garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #e2e7f6; }
 /* Commencer : le mot entre deux traits bleu glace, précédé de l'œuf de dragon qui tremble au survol */
@@ -263,7 +266,8 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   height: 2.2em;
   background: url("images/oeuf.png") no-repeat center / contain;
 }
-.garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover { color: var(--peche); }
+.garde .commencer tw-link, .garde .commencer .enchantment-link { text-decoration: underline 2px transparent; text-underline-offset: 0.3em; transition: text-decoration-color 0.2s ease; }
+.garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover { color: #fff; text-decoration-color: var(--pull-clair); }
 .garde .commencer tw-link:hover::before, .garde .commencer .enchantment-link:hover::before { animation: tremble 0.12s linear 4; }
 @media (max-width: 600px) {
   .garde .commencer .trait { width: 2.4em; }
@@ -281,7 +285,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   border-radius: 0;
   padding: 0;
 }
-.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--peche); }
+.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: #fff; background: transparent; border-bottom-color: var(--pull-clair); }
 
 /* Petits boutons secondaires */
 .secondaires tw-link, .secondaires .enchantment-link {
@@ -295,7 +299,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   padding: 0.2em 1em 0.15em;
   background: var(--papier);
 }
-.secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); background: var(--or-clair); }
+.secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); background: var(--neige); }
 
 /* Lien Couverture */
 .retour { margin: 0 auto 1.2em; text-align: left; }
@@ -307,7 +311,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   color: var(--gris);
 }
 .retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
-.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--braise); }
+.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--tuque); }
 
 /* Le moment du tirage : un encart de nuit sur la page blanche, en Literata, avec l'œuf à droite */
 .de {
@@ -327,9 +331,10 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .de .consigne { display: block; font-style: italic; color: var(--or-clair); margin-bottom: 0.6em; }
 .choix { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5em; }
 .choix tw-link, .choix .enchantment-link { color: var(--nuit); font-weight: 700; }
-.choix tw-link:hover, .choix .enchantment-link:hover { color: var(--braise); }
+.choix tw-link:hover, .choix .enchantment-link:hover { color: var(--tuque); }
 .de .choix tw-link, .de .choix .enchantment-link { color: #fff; }
-.de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--or); }
+.de .choix tw-link { text-decoration: underline 1.5px transparent; text-underline-offset: 0.25em; }
+.de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: #fff; text-decoration-color: var(--pull-clair); }
 /* Le nombre à obtenir, dans une pastille dorée devant le choix */
 .tirage { display: inline-flex; align-items: center; gap: 0.55em; }
 .tirage b {
@@ -350,16 +355,13 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .de .choix .relance { color: #b9c4e6; font-size: 0.95em; }
 .suite { margin-top: 0.8em; }
 
-/* Séparateur : une étincelle dorée entre deux traits qui s'effacent */
-.separateur { display: flex; align-items: center; justify-content: center; gap: 0.7em; margin: 1.5em 0 1.1em; }
-.separateur::before, .separateur::after { content: ""; width: 5.5em; height: 1.5px; background: linear-gradient(to right, transparent, var(--or)); }
-.separateur::after { background: linear-gradient(to left, transparent, var(--or)); }
-.separateur .embleme {
-  width: 1em;
-  height: 1em;
-  background: radial-gradient(circle, #fff3d0 0 20%, var(--or) 45%, transparent 70%);
-  filter: drop-shadow(0 0 6px rgba(242, 178, 91, 0.9));
-}
+/* Séparateur : aligné à gauche, un petit œuf de dragon suivi d'un trait bleu glace effilé, comme sur la
+   couverture ; centré sur la page de contexte, dont le texte est centré */
+.separateur { display: flex; align-items: center; justify-content: flex-start; gap: 0.3em; margin: 1.5em 0 1.1em; }
+.separateur .embleme { flex: none; width: 2.1em; height: 2.1em; background: url("images/oeuf.png") no-repeat center / contain; }
+.separateur::after { content: ""; width: 6.5em; height: 0.8em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M2 7 C40 1.5 80 4.5 112 7 C80 9.5 40 12.5 2 7 Z' fill='%237fa3c8'/%3E%3Ccircle cx='115' cy='7' r='3' fill='%237fa3c8'/%3E%3C/svg%3E") no-repeat center / contain; }
+.contexte .separateur { justify-content: center; }
+.contexte .separateur::before { content: ""; width: 6.5em; height: 0.8em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M2 7 C40 1.5 80 4.5 112 7 C80 9.5 40 12.5 2 7 Z' fill='%237fa3c8'/%3E%3Ccircle cx='115' cy='7' r='3' fill='%237fa3c8'/%3E%3C/svg%3E") no-repeat center / contain; transform: scaleX(-1); }
 
 /* Renvoi seul : un bouton bleu glace, une flèche rouge tuque qui avance au survol */
 .elan { align-items: flex-start; margin-top: 1.6em; }
@@ -523,7 +525,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .arbre img { display: block; width: 100%; max-width: 760px; height: auto; margin: 0 auto; }
 
 tw-link, .enchantment-link { color: var(--nuit); font-weight: 700; text-decoration: none; }
-tw-link:hover, .enchantment-link:hover { color: var(--braise); }
+tw-link:hover, .enchantment-link:hover { color: var(--tuque); }
 
 @media (max-width: 600px) {
   tw-story { font-size: 1em; }
