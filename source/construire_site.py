@@ -661,9 +661,9 @@ def passage_chapitre(ch):
 
 
 def numero_chapitre(numero):
-    """« Chapitre 2 » devient la pastille rouge 2 suivie du mot Chapitre ; le Prologue reste un mot seul"""
+    """« Chapitre 2 » devient le mot Chapitre suivi du numéro dans sa pastille ; le Prologue reste un mot seul"""
     if numero.startswith("Chapitre "):
-        return f'<b>{numero.split()[-1]}</b> Chapitre'
+        return f'Chapitre <b>{numero.split()[-1]}</b>'
     return numero
 
 
