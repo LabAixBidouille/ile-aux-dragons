@@ -132,7 +132,7 @@ tw-passage { max-width: 1080px; margin: 0 auto; }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Titres de chapitre : le mot Chapitre en rouge tuque, le numéro dans une pastille bleu glace, le titre en lettres de carte au trésor */
+/* Titres de chapitre : « Chapitre 1 » simplement en rouge tuque, le titre en lettres de carte au trésor */
 .chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1em; line-height: 1.1; }
 .chapitre .numero {
   display: inline-flex;
@@ -143,18 +143,6 @@ tw-story { overflow: clip; }
   font-size: 0.95em;
   color: var(--tuque);
   margin-bottom: 0.35em;
-}
-.chapitre .numero b {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.9em;
-  height: 1.9em;
-  border-radius: 50%;
-  background: var(--glace);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.05em;
 }
 .chapitre .titre {
   display: block;
@@ -645,7 +633,7 @@ def passage_chapitre(ch):
         suite.append('<div class="fin"><span class="mot-fin">FIN</span>'
                      f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}</div></div>')
     texte = ('<div class="texte">'
-             f'<h1 class="chapitre"><span class="numero">{numero_chapitre(ch["numero"])}</span>'
+             f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>'
              f'<span class="titre">{ch["titre"]}</span></h1>'
              + "\n\n".join(corps) + "".join(suite) + "</div>")
     # Colonne de droite : l'illustration, qui suit la lecture au défilement
@@ -658,13 +646,6 @@ def passage_chapitre(ch):
                 + "".join(f'<span class="halo"><img src="{i}" alt="{ch["titre"]}"></span>' for i in images)
                 + '</div></div>')
     return f'<div class="page">{texte}{cote}</div>'
-
-
-def numero_chapitre(numero):
-    """« Chapitre 2 » devient le mot Chapitre suivi du numéro dans sa pastille ; le Prologue reste un mot seul"""
-    if numero.startswith("Chapitre "):
-        return f'Chapitre <b>{numero.split()[-1]}</b>'
-    return numero
 
 
 def illustration(nom):
