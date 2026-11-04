@@ -293,7 +293,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   display: flex;
   align-items: center;
   gap: 1.2em;
-  margin-top: 0.4em;
+  margin-top: 1.6em;
   padding: 1.15em 1.4em;
   border-radius: 16px;
   background: radial-gradient(ellipse at 80% 0%, var(--nuit-clair), var(--nuit) 55%, var(--nuit-fonce));
@@ -624,7 +624,8 @@ def passage_chapitre(ch):
             corps.append(p)
 
     suite = []
-    if not appel:
+    # Pas de séparateur au-dessus de l'encart du dé : l'encart marque déjà la fin du chapitre
+    if not appel and not consigne:
         suite.append(SEPARATEUR)
     if consigne:
         # Sur les vrais tirages, un œuf à toucher à droite du bloc consigne et choix ; il montre la face sans choisir

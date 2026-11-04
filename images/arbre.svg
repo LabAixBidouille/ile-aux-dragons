@@ -7,24 +7,24 @@
 <polyline points="560,256 560,320" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
 <polyline points="560,430 300,430 300,490" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="560,430 300,430 300,490" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
-<rect x="416.9" y="419" width="26.2" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
-<text x="430" y="435" font-size="15" text-anchor="middle" fill="#24305a">4</text>
+<rect x="404.6" y="419" width="50.8" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
+<text x="430" y="435" font-size="15" text-anchor="middle" fill="#24305a">pair</text>
 <polyline points="560,430 820,430 820,490" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="560,430 820,430 820,490" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
-<rect x="676.9" y="419" width="26.2" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
-<text x="690" y="435" font-size="15" text-anchor="middle" fill="#24305a">2</text>
+<rect x="656.4" y="419" width="67.19999999999999" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
+<text x="690" y="435" font-size="15" text-anchor="middle" fill="#24305a">impair</text>
 <polyline points="300,556 300,620 530,620 530,650" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="300,556 300,620 530,620 530,650" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
 <polyline points="820,556 820,620 590,620 590,650" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="820,556 820,620 590,620 590,650" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
 <polyline points="560,760 300,760 300,820" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="560,760 300,760 300,820" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
-<rect x="416.9" y="749" width="26.2" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
-<text x="430" y="765" font-size="15" text-anchor="middle" fill="#24305a">6</text>
+<rect x="404.6" y="749" width="50.8" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
+<text x="430" y="765" font-size="15" text-anchor="middle" fill="#24305a">pair</text>
 <polyline points="560,760 820,760 820,820" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="560,760 820,760 820,820" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
-<rect x="676.9" y="749" width="26.2" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
-<text x="690" y="765" font-size="15" text-anchor="middle" fill="#24305a">1</text>
+<rect x="656.4" y="749" width="67.19999999999999" height="22" rx="11" fill="#fff" stroke="#24305a" stroke-width="1.5"/>
+<text x="690" y="765" font-size="15" text-anchor="middle" fill="#24305a">impair</text>
 <polyline points="300,886 300,950 530,950 530,980" fill="none" stroke="#fff" stroke-width="8"/>
 <polyline points="300,886 300,950 530,950 530,980" fill="none" stroke="#24305a" stroke-width="2" marker-end="url(#pointe)"/>
 <polyline points="820,886 820,950 590,950 590,980" fill="none" stroke="#fff" stroke-width="8"/>
