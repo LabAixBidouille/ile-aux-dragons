@@ -97,17 +97,17 @@ CSS = """
 html, body, tw-story { background-color: var(--papier); color: var(--encre); }
 tw-story {
   font-family: "Alegreya", Georgia, serif;
-  font-size: 1.06em;
+  font-size: 1.02em;
   line-height: 1.65;
-  padding: 4em 1.25em 4em;
+  padding: 4em 2em 4em;
 }
-tw-passage { max-width: 1220px; margin: 0 auto; }
+tw-passage { max-width: 1080px; margin: 0 auto; }
 
 /* Pages de lecture : le texte à gauche dans une colonne de lecture, la planche à droite, collée au texte et
    aussi large que possible ; l'ensemble reste centré dans la page */
 .page {
   display: grid;
-  grid-template-columns: minmax(0, 33em) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 31em) minmax(0, 1fr);
   gap: 2.2em;
   align-items: start;
   justify-content: center;
