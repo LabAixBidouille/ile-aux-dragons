@@ -18,8 +18,8 @@ TEXTE = RACINE / "source" / "texte.md"
 SORTIE = RACINE / "images" / "arbre.svg"
 POLICE = RACINE / "fonts" / "Nunito.woff2"
 
-# Couleurs du livre : rouge de la tuque, jaune de Croquemou, encre noire, bleu de la neige
-ORANGE, JAUNE_CLAIR, VIOLET, MENTHE, ENCRE = "#c23a2b", "#fdf0c4", "#1c1b24", "#4f6aa8", "#1c1b24"
+# Couleurs du livre : la nuit bleue de l’île, l’or et la braise de Croquemou
+ORANGE, JAUNE_CLAIR, VIOLET, MENTHE, ENCRE = "#e0782f", "#fff1d6", "#24305a", "#b9692a", "#2a2c3d"
 GAUCHE, LARGEUR, HAUTEUR = 110, 900, 1580
 L_CASE, H_CASE = 230, 66
 

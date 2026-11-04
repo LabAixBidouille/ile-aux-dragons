@@ -15,7 +15,7 @@ RACINE = Path(__file__).resolve().parent.parent
 TEXTE = RACINE / "source" / "texte.md"
 SORTIE = RACINE / "index.html"
 NOINDEX = '<meta name="robots" content="noindex, nofollow, noarchive">'
-# Favicon : la tête de Croquemou
+# Favicon : l'œuf de dragon
 FAVICON = ('<link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48.png">'
            '<link rel="icon" type="image/png" sizes="180x180" href="images/favicon.png">'
            '<link rel="apple-touch-icon" href="images/favicon.png">')
@@ -62,35 +62,39 @@ CITATION = ("Anna affronte le sorcier. Grâce à son intelligence et son habilet
             "les dragons.")
 
 CSS = """
-@font-face { font-family: "Uncial Antiqua"; font-display: swap; src: url("fonts/UncialAntiqua.woff2") format("woff2"); }
-@font-face { font-family: "Bangers"; font-display: swap; src: url("fonts/Bangers.woff2") format("woff2"); }
-@font-face { font-family: "Patrick Hand"; font-display: swap; src: url("fonts/PatrickHand.woff2") format("woff2"); }
+@font-face { font-family: "Cinzel"; font-weight: 400 900; font-display: swap; src: url("fonts/Cinzel.woff2") format("woff2"); }
+@font-face { font-family: "Marcellus"; font-display: swap; src: url("fonts/Marcellus.woff2") format("woff2"); }
+/* Dans Cinzel et Marcellus, le 1 ressemble à un I : les chiffres sont pris dans Lora */
+@font-face { font-family: "Cinzel"; font-display: swap; src: url("fonts/Lora.woff2") format("woff2"); unicode-range: U+0030-0039; }
+@font-face { font-family: "Marcellus"; font-display: swap; src: url("fonts/Lora.woff2") format("woff2"); unicode-range: U+0030-0039; }
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/Lora.woff2") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("fonts/Lora-i.woff2") format("woff2"); }
 @font-face { font-family: "Nunito"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("fonts/Nunito.woff2") format("woff2"); }
-@font-face { font-family: "Nunito"; font-style: italic; font-weight: 400 800; font-display: swap; src: url("fonts/Nunito-italique.woff2") format("woff2"); }
 
-/* Esprit BD fantastique, couleurs des planches : encre noire des cases, rouge de la tuque d'Anna,
-   orange et jaune de Croquemou, bleu de la neige et du ciel d'hiver */
+/* « Braise et neige » : la nuit bleue de l'île pour la couverture et le moment du tirage, la page
+   blanche pour la lecture, l'or et la braise de Croquemou pour les titres et les lueurs */
 :root {
-  --encre: #1c1b24;
-  --rouge: #c23a2b;
-  --rouge-fonce: #8f2419;
-  --orange: #e8862a;
-  --jaune: #f6cf4e;
-  --bleu: #4f6aa8;
-  --ciel: #e3e9f6;
-  --gris: #5b5f6e;
+  --nuit: #24305a;
+  --nuit-fonce: #18203d;
+  --nuit-clair: #3b4f86;
+  --or: #f2b25b;
+  --or-clair: #ffe1a8;
+  --or-fonce: #b9692a;
+  --braise: #e0782f;
+  --encre: #2a2c3d;
+  --gris: #6a6e80;
   --papier: #ffffff;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); }
 tw-story {
-  font-family: "Nunito", "Trebuchet MS", sans-serif;
+  font-family: "Lora", Georgia, serif;
   font-size: 1.04em;
-  line-height: 1.7;
+  line-height: 1.75;
   padding: 4em 1.25em 4em;
 }
 tw-passage { max-width: 1180px; margin: 0 auto; }
 
-/* Pages de lecture : le texte à gauche, la planche à droite, qui suit le défilement */
+/* Pages de lecture : le texte à gauche, l'illustration à droite, qui suit le défilement */
 .page {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
@@ -98,17 +102,15 @@ tw-passage { max-width: 1180px; margin: 0 auto; }
   align-items: start;
 }
 .cote { position: sticky; top: 1.5em; margin-top: 2.5em; }
-.illustration { display: flex; flex-direction: column; gap: 1.2em; }
+.illustration { display: flex; flex-direction: column; gap: 1.4em; }
 .halo { display: block; }
-/* Une case de BD : épais trait d'encre et ombre portée franche */
 .illustration img {
   display: block;
   width: 100%;
   max-height: 88vh;
   object-fit: contain;
-  border: 3px solid var(--encre);
-  box-shadow: 6px 6px 0 var(--encre);
-  background: var(--papier);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(224, 138, 51, 0.55), 0 0 36px -6px rgba(242, 178, 91, 0.6);
 }
 .page:not(:has(.cote)) { grid-template-columns: minmax(0, 40em); justify-content: center; }
 @media (max-width: 800px) {
@@ -118,31 +120,30 @@ tw-passage { max-width: 1180px; margin: 0 auto; }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Titres de chapitre : le numéro dans un cartouche jaune, le titre en lettres de légende */
+/* Titres de chapitre : le numéro en petites capitales dorées, le titre gravé en bleu nuit */
 .chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1.1em; line-height: 1.1; }
 .chapitre .numero {
-  display: inline-block;
-  font-family: "Bangers", "Impact", sans-serif;
-  font-size: 1.25em;
-  letter-spacing: 0.06em;
-  color: var(--encre);
-  background: var(--jaune);
-  border: 2.5px solid var(--encre);
-  box-shadow: 3px 3px 0 var(--encre);
-  padding: 0.1em 0.6em 0;
-  transform: rotate(-2deg);
-  margin-bottom: 0.7em;
+  display: block;
+  font-family: "Marcellus", Georgia, serif;
+  font-size: 0.88em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--or-fonce);
+  margin-bottom: 0.4em;
 }
 .chapitre .titre {
   display: block;
-  font-family: "Uncial Antiqua", Georgia, serif;
-  font-weight: 400;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 500;
   font-size: 2.1em;
-  color: var(--rouge);
-  text-shadow: 2px 2px 0 var(--jaune);
+  color: var(--nuit);
 }
 
-/* Page de garde */
+/* Page de garde : la seule page sur fond de nuit */
+html:has(.garde), html:has(.garde) body, tw-story:has(.garde) {
+  background: radial-gradient(ellipse at 70% 0%, var(--nuit-clair) 0%, var(--nuit) 45%, var(--nuit-fonce) 100%) fixed;
+  color: #eef1fb;
+}
 tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .garde {
   min-height: calc(100vh - 2.2em);
@@ -165,295 +166,308 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   display: block;
   width: 100%;
   height: auto;
-  border: 3px solid var(--encre);
-  box-shadow: 7px 7px 0 var(--encre);
-  transform: rotate(-1deg);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(242, 178, 91, 0.5), 0 0 40px -6px rgba(242, 178, 91, 0.45);
 }
 .garde-texte { display: flex; flex-direction: column; gap: clamp(1.1em, 3.4vh, 1.9em); text-align: center; }
 @media (max-width: 800px) {
   .garde { min-height: 0; }
   .garde-corps { grid-template-columns: minmax(0, 1fr); gap: 1.6em; }
 }
-.garde .surtitre { font-family: "Patrick Hand", cursive; font-size: 1.2em; color: var(--gris); }
+.garde .surtitre {
+  font-family: "Marcellus", Georgia, serif;
+  font-size: 0.88em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b9c4e6;
+}
+/* Titre doré qui luit dans la nuit */
 .garde .grand-titre {
-  font-family: "Uncial Antiqua", Georgia, serif;
-  font-size: clamp(2.4em, 8vh, 4.6em);
-  line-height: 1;
-  color: var(--rouge);
-  -webkit-text-stroke: 1.5px var(--encre);
-  text-shadow: 4px 4px 0 var(--jaune), 6px 6px 0 var(--encre);
-  margin: 0.1em 0 0.2em;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.4em, 8vh, 4.4em);
+  line-height: 1.05;
+  background: linear-gradient(180deg, #fff3d0, var(--or) 60%, var(--braise));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(242, 178, 91, 0.45));
+  margin: 0.25em 0 0.2em;
 }
 .garde .nom-auteur {
-  font-family: "Bangers", "Impact", sans-serif;
-  font-size: clamp(1.3em, 3.6vh, 1.8em);
-  letter-spacing: 0.08em;
-  color: var(--bleu);
+  font-family: "Marcellus", Georgia, serif;
+  font-size: clamp(1.2em, 3.4vh, 1.5em);
+  letter-spacing: 0.12em;
+  color: var(--or);
 }
-.garde .synopsis { margin: 0 auto; max-width: 38em; font-size: 1.05em; line-height: 1.65; }
-/* Commencer : une grande case rouge à l'encre noire, légèrement penchée, qui se redresse au survol */
+.garde .synopsis { margin: 0 auto; max-width: 38em; font-size: 1.02em; line-height: 1.75; color: #dfe4f5; }
+/* Commencer : un bouton d'or qui luit */
 .garde .commencer tw-link, .garde .commencer .enchantment-link {
   display: inline-block;
-  font-family: "Bangers", "Impact", sans-serif;
-  font-size: 1.7em;
-  letter-spacing: 0.06em;
-  color: #ffffff;
-  background: var(--rouge);
-  border: 3px solid var(--encre);
-  box-shadow: 5px 5px 0 var(--encre);
-  padding: 0.25em 1.1em 0.15em;
-  transform: rotate(-2deg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-family: "Marcellus", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.3em;
+  letter-spacing: 0.1em;
+  color: #1a2244;
+  background: linear-gradient(180deg, #ffd890, #f0a04b);
+  padding: 0.5em 1.8em;
+  border-radius: 6px;
+  box-shadow: 0 0 24px rgba(240, 160, 75, 0.55);
+  transition: box-shadow 0.2s ease;
 }
 .garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover {
-  color: #ffffff;
-  transform: rotate(0deg) translate(2px, 2px);
-  box-shadow: 3px 3px 0 var(--encre);
+  color: #1a2244;
+  box-shadow: 0 0 34px 6px rgba(240, 160, 75, 0.7);
 }
 .garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8em 1.4em; }
 
-/* Petits boutons secondaires : bulle à l'encre */
+/* Petits boutons secondaires : un liseré d'or */
 .secondaires tw-link, .secondaires .enchantment-link {
   display: inline-block;
-  font-family: "Patrick Hand", cursive;
-  font-size: 1.05em;
-  color: var(--encre);
-  border: 2px solid var(--encre);
-  border-radius: 999px;
-  padding: 0.15em 1em;
+  font-family: "Marcellus", Georgia, serif;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: 0.06em;
+  color: var(--nuit);
+  border: 1px solid var(--or);
+  border-radius: 6px;
+  padding: 0.3em 1.1em;
   background: var(--papier);
+  transition: box-shadow 0.2s ease;
 }
-.secondaires tw-link:hover, .secondaires .enchantment-link:hover { background: var(--jaune); color: var(--encre); }
+.secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); box-shadow: 0 0 16px rgba(242, 178, 91, 0.5); }
+.garde .secondaires tw-link, .garde .secondaires .enchantment-link { color: var(--or-clair); background: transparent; border-color: rgba(242, 178, 91, 0.6); }
+.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: #fff; }
 
 /* Lien Couverture */
 .retour { margin: 0 auto 1.2em; text-align: left; }
 .retour tw-link, .retour .enchantment-link,
-.lien-retour tw-link, .lien-retour .enchantment-link { font-size: 0.9em; font-weight: 700; color: var(--gris); }
-.retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
-.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--rouge); }
-
-/* Consigne du dé : une bulle de BD, avec sa pointe */
-.de .consigne {
-  position: relative;
-  display: block;
-  font-family: "Patrick Hand", cursive;
-  font-size: 1.35em;
-  line-height: 1.25;
-  color: var(--encre);
-  background: var(--papier);
-  border: 2.5px solid var(--encre);
-  border-radius: 1.2em;
-  padding: 0.5em 0.9em;
-  margin-bottom: 1.1em;
+.lien-retour tw-link, .lien-retour .enchantment-link {
+  font-family: "Marcellus", Georgia, serif;
+  font-weight: 400;
+  font-size: 0.9em;
+  letter-spacing: 0.06em;
+  color: var(--gris);
 }
-.de .consigne::after {
-  content: "";
-  position: absolute;
-  right: 2.2em;
-  bottom: -14px;
-  width: 22px;
-  height: 14px;
-  background: var(--papier);
-  border-right: 2.5px solid var(--encre);
-  border-bottom: 2.5px solid var(--encre);
-  transform: skewX(-35deg);
+.retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
+.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--or-fonce); }
+
+/* Le moment du tirage : un encart de nuit sur la page blanche, la consigne, les choix et l'œuf */
+.de {
+  display: flex;
+  align-items: center;
+  gap: 1.6em;
+  margin-top: 0.4em;
+  padding: 1.3em 1.6em;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 80% 0%, var(--nuit-clair), var(--nuit) 55%, var(--nuit-fonce));
+  color: #eef1fb;
+  box-shadow: 0 10px 26px -12px rgba(24, 32, 61, 0.7);
+}
+.de-texte { flex: 1; min-width: 0; }
+.de .consigne {
+  display: block;
+  font-style: italic;
+  font-size: 1.12em;
+  line-height: 1.45;
+  color: var(--or-clair);
+  margin-bottom: 0.6em;
 }
 .choix { display: flex; flex-direction: column; align-items: flex-start; gap: 0.45em; }
-.choix > *::before { content: "▸"; color: var(--rouge); margin-right: 0.5em; }
 .choix tw-link, .choix .enchantment-link {
-  color: var(--encre);
-  font-weight: 800;
-  border-bottom: 2px solid var(--orange);
+  color: var(--nuit);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(224, 120, 47, 0.6);
 }
-.choix tw-link:hover, .choix .enchantment-link:hover { color: var(--rouge); }
-.choix .relance { color: var(--gris); font-style: italic; }
-.elan > *::before { content: none; }
+.choix tw-link:hover, .choix .enchantment-link:hover { color: var(--braise); }
+.de .choix tw-link, .de .choix .enchantment-link { color: #fff; border-bottom-color: rgba(242, 178, 91, 0.6); }
+.de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--or); }
+.choix .relance { font-style: italic; color: var(--gris); }
+.de .choix .relance { color: #b9c4e6; }
 .suite { margin-top: 0.8em; }
 
-/* Séparateur : une petite flamme de Croquemou entre deux traits d'encre */
-.separateur { display: flex; align-items: center; justify-content: center; gap: 0.7em; margin: 1.6em 0 1.1em; }
-.separateur::before, .separateur::after { content: ""; width: 6em; height: 2.5px; background: var(--encre); border-radius: 2px; }
+/* Séparateur : une étincelle dorée entre deux traits qui s'effacent */
+.separateur { display: flex; align-items: center; justify-content: center; gap: 0.7em; margin: 1.6em 0 1.2em; }
+.separateur::before, .separateur::after { content: ""; width: 5.5em; height: 1px; background: linear-gradient(to right, transparent, var(--or)); }
+.separateur::after { background: linear-gradient(to left, transparent, var(--or)); }
 .separateur .embleme {
-  width: 1.4em;
-  height: 1.8em;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 36'%3E%3Cpath d='M14 2 C18 10 25 13 25 22 C25 30 20 34 14 34 C8 34 3 30 3 22 C3 16 7 13 9 8 C10 13 12 15 14 15 C15 11 13 7 14 2 Z' fill='%23e8862a' stroke='%231c1b24' stroke-width='2.2' stroke-linejoin='round'/%3E%3Cpath d='M14 18 C17 22 19 24 19 27 C19 31 16 32 14 32 C11 32 9 30 9 27 C9 24 12 23 14 18 Z' fill='%23f6cf4e'/%3E%3C/svg%3E") no-repeat center / contain;
+  width: 1em;
+  height: 1em;
+  background: radial-gradient(circle, #fff3d0 0 20%, var(--or) 45%, transparent 70%);
+  filter: drop-shadow(0 0 6px rgba(242, 178, 91, 0.9));
 }
 .garde .separateur { margin: 0; }
 
-/* Renvoi seul : un cartouche jaune de BD */
+/* Renvoi seul : un bouton blanc au liseré d'or */
 .elan { align-items: center; margin-top: 2.2em; }
 .choix.elan tw-link, .choix.elan .enchantment-link {
   display: inline-block;
-  font-family: "Bangers", "Impact", sans-serif;
+  font-family: "Marcellus", Georgia, serif;
   font-weight: 400;
-  font-size: 1.25em;
-  letter-spacing: 0.05em;
-  color: var(--encre);
-  background: var(--jaune);
-  border: 2.5px solid var(--encre);
-  box-shadow: 4px 4px 0 var(--encre);
-  padding: 0.2em 0.9em 0.1em;
-  transform: rotate(-1.5deg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover {
-  color: var(--encre);
-  transform: rotate(0deg) translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--encre);
-}
-
-/* Dé à lancer : un dé dessiné à l'encre, comme dans une case ; il montre la face sans choisir */
-.de { display: flex; align-items: center; gap: 1.6em; }
-.de-texte { flex: 1; min-width: 0; }
-.fleche-de { flex: none; width: 3.4em; height: auto; margin-right: -0.6em; transform: translateY(-0.2em); }
-.lancer { flex: none; position: relative; display: flex; }
-.de-virtuel {
-  position: relative;
-  font-size: inherit;
-  width: 4.6em;
-  height: 4.6em;
-  padding: 0.5em;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  font-size: 1.1em;
+  letter-spacing: 0.08em;
+  color: var(--nuit);
   background: var(--papier);
-  border: 3px solid var(--encre);
-  border-radius: 0.7em;
-  box-shadow: 5px 5px 0 var(--encre);
+  border: 1px solid var(--or);
+  border-radius: 6px;
+  padding: 0.45em 1.4em;
+  box-shadow: 0 0 16px rgba(242, 178, 91, 0.35);
+  transition: box-shadow 0.2s ease;
+}
+.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover { color: var(--nuit); box-shadow: 0 0 26px 4px rgba(242, 178, 91, 0.55); }
+
+/* L'œuf de dragon de Manon : il tremble, éclot et laisse voir le nombre tiré. L'image est carrée et
+   l'œuf est en son centre : il est centré dans sa colonne et dans la hauteur de l'encart. Le résultat
+   écrit n'est lu que par les lecteurs d'écran. */
+.lancer { flex: none; width: 7em; align-self: stretch; display: flex; align-items: center; justify-content: center; }
+.oeuf {
+  position: relative;
+  width: 7em;
+  height: 7em;
+  margin: -0.8em 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
   cursor: pointer;
-  transform: rotate(-6deg);
-  transition: transform 0.15s ease;
 }
-.de-virtuel:hover { transform: rotate(4deg); }
-.de-virtuel.roule { animation: roule 0.3s linear infinite; }
-@keyframes roule {
-  0% { transform: rotate(0deg) translateY(0); }
-  50% { transform: rotate(180deg) translateY(-4px); }
-  100% { transform: rotate(360deg) translateY(0); }
+.oeuf .coque {
+  position: absolute;
+  inset: 0;
+  background: url("images/oeuf.png") no-repeat center / contain;
+  transition: transform 0.5s ease, opacity 0.5s ease, filter 0.2s ease;
 }
-.de-virtuel i { width: 0.8em; height: 0.8em; border-radius: 50%; background: var(--rouge); border: 2px solid var(--encre); place-self: center; visibility: hidden; }
-.de-virtuel[data-face="0"]::after {
-  content: "?";
+.oeuf:hover .coque { filter: brightness(1.12) drop-shadow(0 0 10px rgba(242, 178, 91, 0.6)); }
+.oeuf .dedans {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Bangers", "Impact", sans-serif;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 500;
   font-size: 2.8em;
-  color: var(--rouge);
-  -webkit-text-stroke: 1px var(--encre);
+  line-height: 1;
+  color: var(--or-clair);
+  text-shadow: 0 0 10px var(--or), 0 0 22px var(--braise);
+  opacity: 0;
+  transition: opacity 0.4s ease 0.2s;
 }
-.de-virtuel[data-face="1"] i:nth-child(5),
-.de-virtuel[data-face="2"] i:is(:nth-child(1), :nth-child(9)),
-.de-virtuel[data-face="3"] i:is(:nth-child(1), :nth-child(5), :nth-child(9)),
-.de-virtuel[data-face="4"] i:is(:nth-child(1), :nth-child(3), :nth-child(7), :nth-child(9)),
-.de-virtuel[data-face="5"] i:is(:nth-child(1), :nth-child(3), :nth-child(5), :nth-child(7), :nth-child(9)),
-.de-virtuel[data-face="6"] i:is(:nth-child(1), :nth-child(3), :nth-child(4), :nth-child(6), :nth-child(7), :nth-child(9)) { visibility: visible; }
+.oeuf.tremble .coque { animation: tremble 0.12s linear infinite; }
+@keyframes tremble { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+.oeuf.ouvert .coque { transform: scale(1.3); opacity: 0; }
+.oeuf.ouvert .dedans { opacity: 1; }
 .resultat {
   position: absolute;
-  top: calc(100% + 0.8em);
-  left: 50%;
-  transform: translateX(-50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
-  font-family: "Patrick Hand", cursive;
-  font-size: 1.15em;
-  color: var(--encre);
 }
 @media (max-width: 600px) {
-  .de { gap: 0.6em; }
-  .fleche-de { width: 2.4em; }
-  .de-virtuel { width: 3.6em; height: 3.6em; padding: 0.4em; }
-  .de-virtuel i { width: 0.6em; height: 0.6em; }
-  .de-virtuel[data-face="0"]::after { font-size: 2.1em; }
+  .de { gap: 0.6em; padding: 1.1em 1.1em; }
+  .lancer { width: 5.2em; }
+  .oeuf { width: 5.2em; height: 5.2em; margin: -0.5em 0; }
+  .oeuf .dedans { font-size: 2.2em; }
 }
 
 /* Fin */
 .fin { margin-top: 0.6em; text-align: center; }
 .fin .mot-fin {
   display: block;
-  font-family: "Bangers", "Impact", sans-serif;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 500;
   font-size: 3em;
-  letter-spacing: 0.1em;
-  color: var(--orange);
-  -webkit-text-stroke: 1.5px var(--encre);
-  text-shadow: 4px 4px 0 var(--encre);
-  transform: rotate(-3deg);
+  letter-spacing: 0.15em;
+  background: linear-gradient(180deg, #f6c46f, #df8a33 55%, #a9531f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 12px rgba(242, 178, 91, 0.45));
   margin-bottom: 0.4em;
 }
-.appel { font-family: "Patrick Hand", cursive; font-size: 1.4em; color: var(--rouge); }
+.appel { display: block; text-align: center; font-family: "Cinzel", Georgia, serif; font-weight: 500; font-size: 1.35em; color: var(--nuit); }
 
-/* Page « Comment est née cette histoire » : texte centré, citation, fiches sur une table */
-.contexte { font-size: 0.92em; text-align: center; }
+/* Page « Comment est née cette histoire » : texte centré, citation, fiches de l'atelier */
+.contexte { font-size: 0.95em; text-align: center; }
 .contexte .lien-retour { display: block; text-align: left; margin-bottom: 1em; }
-.contexte h1 {
-  font-family: "Uncial Antiqua", Georgia, serif;
-  font-weight: 400;
+.contexte h1, .arbre h1 {
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 500;
   font-size: 2.4em;
   line-height: 1.1;
-  color: var(--rouge);
-  text-shadow: 2px 2px 0 var(--jaune);
+  color: var(--nuit);
   margin: 0.2em 0 0.1em;
 }
 .contexte-texte { max-width: 38em; margin: 0 auto; }
 .citation {
-  position: relative;
   max-width: 30em;
   margin: 2em auto;
-  padding: 0.8em 1.2em;
-  font-family: "Patrick Hand", cursive;
-  font-size: 1.45em;
-  line-height: 1.35;
-  background: var(--papier);
-  border: 2.5px solid var(--encre);
-  border-radius: 1.3em;
-  box-shadow: 4px 4px 0 var(--encre);
+  padding: 0.2em 0;
+  font-style: italic;
+  font-size: 1.35em;
+  line-height: 1.45;
+  color: var(--nuit);
 }
-.citation .source { display: block; margin-top: 0.4em; font-family: "Nunito", sans-serif; font-size: 0.55em; color: var(--gris); }
-.table-fiches { margin: 2.6em auto 0; max-width: 62em; padding: 1.8em 1.5em; background: var(--ciel); border: 2.5px solid var(--encre); }
-.table-fiches .titre-table { display: block; font-family: "Bangers", "Impact", sans-serif; font-size: 1.5em; letter-spacing: 0.05em; color: var(--encre); margin-bottom: 1.1em; }
+.citation .source {
+  display: block;
+  margin-top: 0.5em;
+  font-family: "Marcellus", Georgia, serif;
+  font-style: normal;
+  font-size: 0.55em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--or-fonce);
+}
+.table-fiches {
+  margin: 2.6em auto 0;
+  max-width: 62em;
+  padding: 1.8em 1.5em 2.2em;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 80% 0%, var(--nuit-clair), var(--nuit) 55%, var(--nuit-fonce));
+  color: #eef1fb;
+}
+.table-fiches .titre-table {
+  display: block;
+  font-family: "Marcellus", Georgia, serif;
+  font-size: 1em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--or);
+  margin-bottom: 1.3em;
+}
 .miniatures { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 2em; }
 .miniatures figure { margin: 0; }
-.miniatures figcaption { margin-top: 0.8em; font-family: "Patrick Hand", cursive; font-size: 1.15em; color: var(--encre); }
+.miniatures figcaption { margin-top: 0.8em; font-style: italic; color: var(--or-clair); }
 .miniature { display: block; padding: 0; border: none; background: none; cursor: zoom-in; }
-.miniature img { display: block; height: 15em; width: auto; border: 2px solid var(--encre); box-shadow: 4px 4px 0 var(--encre); transition: transform 0.2s ease; }
-.miniatures figure:nth-child(1) img { transform: rotate(-3deg); }
-.miniatures figure:nth-child(2) img { transform: rotate(1.5deg); }
-.miniatures figure:nth-child(3) img { transform: rotate(-1deg); }
-.miniatures .miniature:hover img { transform: rotate(0) scale(1.05); }
+.miniature img { display: block; height: 15em; width: auto; border-radius: 6px; box-shadow: 0 0 0 1px rgba(242, 178, 91, 0.5), 0 0 26px -6px rgba(242, 178, 91, 0.6); transition: transform 0.2s ease; }
+.miniatures .miniature:hover img { transform: scale(1.04); }
 .contexte .credits { display: block; margin-top: 1.6em; font-size: 0.92em; color: var(--gris); }
 .contexte .secondaires { display: flex; justify-content: center; margin-top: 1.4em; }
-.agrandi { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2vh 2vw; background: rgba(28, 27, 36, 0.86); cursor: zoom-out; }
-.agrandi img { max-width: 100%; max-height: 96vh; border: 3px solid var(--encre); }
+.agrandi { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2vh 2vw; background: rgba(24, 32, 61, 0.88); cursor: zoom-out; }
+.agrandi img { max-width: 100%; max-height: 96vh; border-radius: 6px; }
 @media (max-width: 600px) { .miniature img { height: 11em; } }
 
 /* Page de l'arbre */
 .arbre .lien-retour { display: block; font-size: 0.9em; }
 .arbre-tete { text-align: center; margin-bottom: 1.5em; }
-.arbre h1 {
-  font-family: "Uncial Antiqua", Georgia, serif;
-  font-weight: 400;
-  font-size: 2.5em;
-  line-height: 1.1;
-  color: var(--rouge);
-  text-shadow: 2px 2px 0 var(--jaune);
-  margin: 0;
-}
-.arbre .arbre-sous-titre { display: block; font-family: "Patrick Hand", cursive; font-size: 1.3em; color: var(--gris); margin: 0.3em 0 1em; }
+.arbre h1 { margin: 0; }
+.arbre .arbre-sous-titre { display: block; font-style: italic; font-size: 1.15em; color: var(--gris); margin: 0.4em 0 1em; }
 .arbre img { display: block; width: 100%; max-width: 760px; height: auto; margin: 0 auto; }
 
-tw-link, .enchantment-link { color: var(--encre); font-weight: 700; text-decoration: none; }
-tw-link:hover, .enchantment-link:hover { color: var(--rouge); }
+tw-link, .enchantment-link { color: var(--nuit); font-weight: 600; text-decoration: none; }
+tw-link:hover, .enchantment-link:hover { color: var(--braise); }
 
 @media (max-width: 600px) {
   tw-story { font-size: 0.98em; }
-  .garde .grand-titre { font-size: 2.8em; }
+  .garde .grand-titre { font-size: 2.6em; }
   .chapitre .titre { font-size: 1.7em; }
 }
 @media (max-height: 620px) and (min-width: 801px) {
   tw-story:has(.garde) { padding-top: 0.6em; padding-bottom: 0.6em; }
   .garde { min-height: calc(100vh - 1.4em); gap: 0.6em; }
-  .garde .synopsis { font-size: 0.95em; line-height: 1.45; }
+  .garde .synopsis { font-size: 0.95em; line-height: 1.5; }
 }
 """
 
@@ -479,36 +493,29 @@ SEPARATEUR = '<div class="separateur"><span class="embleme"></span></div>'
 
 
 DE_VIRTUEL = (
-    # Une flèche tracée à l'encre, comme un trait de mouvement de BD
-    '<svg class="fleche-de" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke="#1c1b24" '
-    'stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">'
-    '<path d="M4 30 C16 34 34 30 48 16"/><path d="M38 14 L49 15 L47 26"/></g></svg>'
-    '<div class="lancer"><button class="de-virtuel" type="button" data-face="0" '
-    'aria-label="Lancer le dé">' + "<i></i>" * 9 + '</button>'
+    # Un œuf de dragon à la place du dé : on le touche, il tremble, éclot et montre le nombre tiré
+    '<div class="lancer"><button class="oeuf" type="button" aria-label="Toucher l’œuf de dragon pour lancer le dé">'
+    '<span class="coque"></span><span class="dedans"></span></button>'
     '<span class="resultat" aria-live="polite"></span></div>'
 )
 
 # Script commun à toutes les pages : fait rouler le dé puis affiche la face tirée, sans choisir
 SCRIPT_DE = """
-// Le dé roule puis affiche la face tirée ; il ne choisit jamais à la place du lecteur
+// L'œuf tremble, éclot puis montre le nombre tiré ; il ne choisit jamais à la place du lecteur
 document.addEventListener('click', function (evenement) {
-  var de = evenement.target.closest('.de-virtuel');
-  if (!de || de.classList.contains('roule')) return;
-  var resultat = de.parentNode.querySelector('.resultat');
+  var oeuf = evenement.target.closest('.oeuf');
+  if (!oeuf || oeuf.classList.contains('tremble')) return;
+  var resultat = oeuf.parentNode.querySelector('.resultat');
   var face = 1 + Math.floor(Math.random() * 6);
-  var etapes = 0;
-  de.classList.add('roule');
+  oeuf.classList.remove('ouvert');
+  oeuf.classList.add('tremble');
   resultat.textContent = '';
-  var minuterie = setInterval(function () {
-    de.setAttribute('data-face', 1 + Math.floor(Math.random() * 6));
-    etapes += 1;
-    if (etapes >= 8) {
-      clearInterval(minuterie);
-      de.setAttribute('data-face', face);
-      de.classList.remove('roule');
-      resultat.textContent = 'Le dé affiche ' + face + '.';
-    }
-  }, 75);
+  setTimeout(function () {
+    oeuf.classList.remove('tremble');
+    oeuf.querySelector('.dedans').textContent = face;
+    oeuf.classList.add('ouvert');
+    resultat.textContent = 'L’œuf montre ' + face + '.';
+  }, 900);
 });
 
 // Page de contexte : une miniature s'ouvre en grand, un clic referme
@@ -547,7 +554,8 @@ def passage_chapitre(ch):
             for ligne in p.split("\n"):
                 if " -> " not in ligne:
                     # « Un autre nombre : relance le dé » : pas de lien, une simple indication
-                    choix.append(f'<span class="relance">{ligne[2:]}</span>')
+                    relance = ligne[2:].replace("relance le dé", "touche de nouveau l’œuf")
+                    choix.append(f'<span class="relance">{relance}</span>')
                     continue
                 texte, cible = ligne[2:].rsplit(" -> ", 1)
                 choix.append(lien(texte, f"Chapitre {cible}"))
@@ -567,11 +575,11 @@ def passage_chapitre(ch):
     if not appel:
         suite.append(SEPARATEUR)
     if consigne:
-        # Sur les vrais tirages, un dé à lancer à droite du bloc consigne et choix ; il montre la face sans choisir
+        # Sur les vrais tirages, un œuf à toucher à droite du bloc consigne et choix ; il montre la face sans choisir
         lancer = DE_VIRTUEL if tirage else ""
         if tirage:
-            # Sur le site, on lance le dé en cliquant dessus : la consigne le dit, une flèche le montre
-            consigne = consigne.replace("Lance le dé", "Clique sur le dé", 1)
+            # Sur le site, on lance le dé en touchant l'œuf de dragon : la consigne le dit
+            consigne = consigne.replace("Lance le dé", "Touche l’œuf de dragon", 1)
         suite.append(f'<div class="de"><div class="de-texte"><span class="consigne">{consigne}</span>'
                      f'<div class="choix">{"".join(choix)}</div></div>{lancer}</div>')
     elif len(choix) == 1:
