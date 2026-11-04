@@ -69,15 +69,17 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .sans-numero {{ page: sans-numero; }}
 .marque {{ font-size: 1pt; color: #ffffff; }}
 
-/* Couverture intérieure */
-.couverture {{ text-align: center; }}
-.couverture .surtitre {{ font-family: "Skranji"; font-weight: 700; font-size: 10pt; color: {GLACE}; }}
-.couverture .titre-livre {{ font-family: "Eagle Lake"; font-size: 28pt; line-height: 1.05; color: {NUIT};
-  text-shadow: 0.5mm 0.5mm 0 {NEIGE}; margin: 1.5mm 0 1mm; }}
-.couverture .titre-livre span {{ color: #e9982f; }}
-.couverture .autrices {{ font-family: "Skranji"; font-weight: 700; font-size: 13pt; color: {TUQUE}; }}
+/* Couverture intérieure : le bleu nuit du site, à fond perdu, comme la page d'accueil */
+@page couverture {{ margin: 0; @bottom-center {{ content: none; }} }}
+.couverture {{ page: couverture; height: {HAUTEUR_PAGE}mm; padding: 13mm 12mm 10mm; text-align: center; color: #eef1fb;
+  background: radial-gradient(ellipse at 70% 0%, #5065a0 0%, #33427a 45%, #252f58 100%); }}
+.couverture .surtitre {{ font-family: "Skranji"; font-weight: 700; font-size: 10pt; color: #b9d0ea; }}
+.couverture .titre-livre {{ font-family: "Eagle Lake"; font-size: 28pt; line-height: 1.05; color: #ffffff;
+  text-shadow: 0.6mm 0.6mm 0 {GLACE}; margin: 1.5mm 0 1mm; }}
+.couverture .titre-livre span {{ color: {OR_OEUF}; }}
+.couverture .autrices {{ font-family: "Skranji"; font-weight: 700; font-size: 13pt; color: #ffffff; }}
 .couverture img {{ display: block; width: 72mm; margin: 4mm auto 4mm; border-radius: 3mm; }}
-.couverture .resume p {{ font-size: 10pt; line-height: 1.32; margin-bottom: 0.45em; }}
+.couverture .resume p {{ font-size: 10pt; line-height: 1.32; margin-bottom: 0.45em; color: #e2e7f6; }}
 
 /* Planche du chapitre : une page entière */
 .planche .cadre {{ display: flex; align-items: center; justify-content: center; height: 150mm; }}
@@ -218,7 +220,7 @@ def chapitre(ch, pages):
 def document(pages, blanches=0):
     titre = e(TITRE).replace("dragons", "<span>dragons</span>")
     couverture = (
-        '<section class="couverture sans-numero">'
+        '<section class="couverture">'
         '<div class="surtitre">Une histoire dont le lecteur est le héros</div>'
         f'<div class="titre-livre">{titre}</div>'
         f'<div class="autrices">{e(AUTRICES)}</div>'

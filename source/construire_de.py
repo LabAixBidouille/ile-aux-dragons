@@ -2,7 +2,7 @@
 """Dessine le dé à fabriquer de « L'île aux dragons » sur une page A5, dans un PDF à part.
 
 Patron de cube en croix, faces de 29 mm : deux faces opposées font toujours 7. Aux couleurs du site,
-chaque face est blanche, bordée d'un fil bleu glace, avec des points dans l'or de l'œuf de dragon. Les
+chaque face est blanche, bordée d'un fil bleu glace, avec de petits œufs de dragon à la place des points. Les
 traits pleins bleu nuit se découpent, les pointillés bleu glace se plient, les languettes bleu glace
 clair se collent.
 
@@ -19,6 +19,7 @@ from construire_site import AUTRICES, TITRE  # noqa: E402
 
 RACINE = Path(__file__).resolve().parent.parent
 SORTIE = RACINE.parent / "Impression" / "IleAuxDragons_De.pdf"
+OEUF = (RACINE / "images" / "oeuf.png").as_uri()
 
 FACE = 29          # côté d'une face, en mm
 LANGUETTE = 7      # profondeur des languettes, en mm
@@ -72,8 +73,11 @@ def patron():
         # Un fil bleu glace à l'intérieur de chaque face
         dessin.append(f'<rect x="{x + 2.2}" y="{y + 2.2}" width="{FACE - 4.4}" height="{FACE - 4.4}" rx="2.4" '
                       f'fill="none" stroke="{GLACE}" stroke-width="0.5"/>')
+        # Un petit œuf de dragon à la place de chaque point ; l'image carrée a l'œuf en son centre
+        taille = 8.5 if valeur < 6 else 7.2
         for px, py in POINTS[valeur]:
-            dessin.append(f'<circle cx="{x + px * FACE:.2f}" cy="{y + py * FACE:.2f}" r="2.5" fill="url(#point)"/>')
+            dessin.append(f'<image href="{OEUF}" x="{x + px * FACE - taille / 2:.2f}" y="{y + py * FACE - taille / 2:.2f}" '
+                          f'width="{taille}" height="{taille}"/>')
     # Contour découpé en trait plein, puis pliures en pointillés par-dessus
     contour = [(1, 0), (2, 0), (2, 1), (3, 1), (3, 2), (2, 2), (2, 4), (1, 4), (1, 2), (0, 2), (0, 1), (1, 1)]
     trace = " ".join(f"{ox + c * FACE},{oy + li * FACE}" for c, li in contour)
