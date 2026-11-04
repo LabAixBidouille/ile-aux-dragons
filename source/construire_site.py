@@ -69,8 +69,8 @@ CSS = """
 @font-face { font-family: "Literata"; font-style: normal; font-weight: 200 900; font-display: swap; src: url("fonts/Literata.woff2") format("woff2"); }
 @font-face { font-family: "Literata"; font-style: italic; font-weight: 200 900; font-display: swap; src: url("fonts/Literata-i.woff2") format("woff2"); }
 
-/* Livre jeunesse d'aventure : la nuit bleue de l'île pour la couverture et le moment du tirage, la page
-   blanche pour la lecture, l'or et la braise de Croquemou pour les étiquettes et les boutons.
+/* Livre jeunesse d'aventure : la page blanche partout, la nuit bleue de l'île pour le moment du tirage,
+   le rouge de la tuque d'Anna, l'orange de Croquemou et le bleu de la glace pour les touches de couleur, l'or et la braise de Croquemou pour les étiquettes et les boutons.
    Titres en Eagle Lake (carte au trésor), étiquettes et boutons en Skranji (aventure), texte en
    Alegreya (livre de contes), encart du tirage en Literata. */
 :root {
@@ -85,6 +85,13 @@ CSS = """
   --encre: #2a2c3d;
   --gris: #6a6e80;
   --papier: #ffffff;
+  /* Couleurs prises aux planches et à Anna */
+  --tuque: #c8322a;
+  --tuque-fonce: #8f1f1c;
+  --croquemou: #e8862a;
+  --peche: #f6c992;
+  --glace: #7fa3c8;
+  --neige: #e3ecf6;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); }
 tw-story {
@@ -95,8 +102,7 @@ tw-story {
 }
 tw-passage { max-width: 1140px; margin: 0 auto; }
 
-/* Pages de lecture : le texte à gauche, l'illustration à droite comme une photo collée, qui suit le
-   défilement */
+/* Pages de lecture : le texte à gauche, l'illustration à droite, qui suit le défilement */
 .page {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -107,39 +113,48 @@ tw-passage { max-width: 1140px; margin: 0 auto; }
 .cote { position: sticky; top: 1.5em; margin-top: 1.5em; }
 .illustration { display: flex; flex-direction: column; gap: 1.6em; }
 .halo { display: block; }
+/* Le cadre épouse la planche : l'image garde ses proportions et n'est jamais étirée dans une boîte plus large */
 .illustration img {
   display: block;
-  width: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
   max-height: 86vh;
-  object-fit: contain;
-  border: 8px solid #fff;
-  border-radius: 6px;
-  box-shadow: 0 8px 22px rgba(36, 48, 90, 0.3);
-  transform: rotate(1.5deg);
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px -12px rgba(36, 48, 90, 0.45);
 }
-.halo:nth-child(2) img { transform: rotate(-1.5deg); }
 .page:not(:has(.cote)) { grid-template-columns: minmax(0, 38em); justify-content: center; }
 @media (max-width: 800px) {
   .page { grid-template-columns: minmax(0, 1fr); gap: 1.6em; }
   .cote { position: static; order: -1; margin-top: 0; }
-  .illustration img { transform: none; }
 }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Titres de chapitre : une étiquette orange penchée, le titre en lettres de carte au trésor */
+/* Titres de chapitre : le numéro dans une pastille rouge tuque, le titre en lettres de carte au trésor */
 .chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1em; line-height: 1.1; }
 .chapitre .numero {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 0.95em;
+  color: var(--gris);
+  margin-bottom: 0.35em;
+}
+.chapitre .numero b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9em;
+  height: 1.9em;
+  border-radius: 50%;
+  background: var(--tuque);
   color: #fff;
-  background: var(--braise);
-  padding: 0.12em 0.9em 0.08em;
-  border-radius: 8px;
-  transform: rotate(-3deg);
-  margin-bottom: 0.5em;
+  font-weight: 700;
+  font-size: 1.05em;
 }
 .chapitre .titre {
   display: block;
@@ -150,9 +165,9 @@ tw-story { overflow: clip; }
   color: var(--nuit);
 }
 
-/* Page de garde : la seule page sur fond de nuit */
+/* Page de garde : la seule page sur fond de nuit, un bleu un peu plus clair que celui de l'encart */
 html:has(.garde), html:has(.garde) body, tw-story:has(.garde) {
-  background: radial-gradient(ellipse at 70% 0%, var(--nuit-clair) 0%, var(--nuit) 45%, var(--nuit-fonce) 100%) fixed;
+  background: radial-gradient(ellipse at 70% 0%, #5065a0 0%, #33427a 45%, #252f58 100%) fixed;
   color: #eef1fb;
 }
 tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
@@ -173,54 +188,73 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 }
 .garde-image img {
   display: block;
-  width: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
   max-height: 84vh;
-  object-fit: contain;
-  border: 8px solid #fff;
-  border-radius: 6px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-  transform: rotate(-2deg);
+  margin: 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.5);
 }
-.garde-texte { display: flex; flex-direction: column; align-items: center; gap: clamp(0.9em, 2.6vh, 1.5em); text-align: center; }
+.garde-texte { display: flex; flex-direction: column; align-items: center; gap: clamp(0.9em, 2.6vh, 1.4em); text-align: center; }
 .garde-entete { display: flex; flex-direction: column; align-items: center; }
 @media (max-width: 800px) {
   .garde { min-height: 0; }
   .garde-corps { grid-template-columns: minmax(0, 1fr); gap: 2em; }
-  .garde-image img { transform: none; }
 }
-.garde .surtitre { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1em; color: var(--or-clair); }
+.garde .surtitre { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1em; color: #b9d0ea; }
 .garde .grand-titre {
   font-family: "Eagle Lake", Georgia, serif;
   font-weight: 400;
-  font-size: clamp(2.3em, 7vh, 3.4em);
+  font-size: clamp(2.3em, 7vh, 3.3em);
   line-height: 1.05;
   color: #fff;
-  text-shadow: 3px 3px 0 var(--braise), 6px 6px 0 var(--nuit-fonce);
   margin: 0.15em 0 0.1em;
 }
-.garde .grand-titre span { color: var(--or); }
-.garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: var(--or); }
-.garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #dfe4f5; }
-/* Commencer : un gros bouton braise, légèrement penché */
+.garde .grand-titre span { color: var(--croquemou); }
+.garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: #fff; }
+.garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #e2e7f6; }
+/* Commencer : le mot entre deux traits bleu glace, précédé de l'œuf de dragon qui tremble au survol */
+.garde .commencer { display: flex; align-items: center; justify-content: center; gap: 0.7em; }
+.garde .commencer .trait { flex: none; width: 4.5em; height: 0.9em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M118 7 C80 1.5 40 4.5 8 7 C40 9.5 80 12.5 118 7 Z' fill='%23b9d0ea'/%3E%3Ccircle cx='5' cy='7' r='3' fill='%23b9d0ea'/%3E%3C/svg%3E") no-repeat center / contain; }
+.garde .commencer .trait.droite { transform: scaleX(-1); }
 .garde .commencer tw-link, .garde .commencer .enchantment-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  white-space: nowrap;
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
-  font-size: 1.3em;
+  font-size: 1.45em;
   color: #fff;
-  background: var(--braise);
-  padding: 0.3em 1.5em 0.25em;
-  border-radius: 14px;
-  box-shadow: 0 5px 0 var(--braise-fonce);
-  transform: rotate(-1.5deg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: color 0.2s ease;
 }
-.garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover {
+.garde .commencer tw-link::before, .garde .commencer .enchantment-link::before {
+  content: "";
+  flex: none;
+  width: 2.2em;
+  height: 2.2em;
+  background: url("images/oeuf.png") no-repeat center / contain;
+}
+.garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover { color: var(--peche); }
+.garde .commencer tw-link:hover::before, .garde .commencer .enchantment-link:hover::before { animation: tremble 0.12s linear 4; }
+@media (max-width: 600px) {
+  .garde .commencer .trait { width: 2.4em; }
+  .garde .commencer tw-link, .garde .commencer .enchantment-link { font-size: 1.25em; }
+}
+.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6em 1.2em; }
+.garde .secondaires tw-link, .garde .secondaires .enchantment-link {
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
   color: #fff;
-  transform: rotate(0deg) translateY(2px);
-  box-shadow: 0 3px 0 var(--braise-fonce);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(246, 201, 146, 0.7);
+  border-radius: 0;
+  padding: 0;
 }
-.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7em 1em; }
+.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--peche); }
 
 /* Petits boutons secondaires */
 .secondaires tw-link, .secondaires .enchantment-link {
@@ -235,8 +269,6 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   background: var(--papier);
 }
 .secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); background: var(--or-clair); }
-.garde .secondaires tw-link, .garde .secondaires .enchantment-link { color: var(--or-clair); background: transparent; border-color: rgba(242, 178, 91, 0.6); }
-.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--nuit-fonce); background: var(--or); }
 
 /* Lien Couverture */
 .retour { margin: 0 auto 1.2em; text-align: left; }
@@ -302,26 +334,31 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   filter: drop-shadow(0 0 6px rgba(242, 178, 91, 0.9));
 }
 
-/* Renvoi seul : un bouton doré penché */
+/* Renvoi seul : un bouton bleu glace, une flèche rouge tuque qui avance au survol */
 .elan { align-items: flex-start; margin-top: 1.6em; }
 .choix.elan tw-link, .choix.elan .enchantment-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
-  font-size: 1.1em;
-  color: var(--nuit-fonce);
-  background: var(--or);
-  padding: 0.3em 1.3em 0.2em;
+  font-size: 1.02em;
+  color: var(--nuit);
+  background: var(--neige);
+  padding: 0.4em 1.3em 0.35em;
   border-radius: 12px;
-  box-shadow: 0 4px 0 var(--or-fonce);
-  transform: rotate(-1deg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-bottom: 3px solid var(--glace);
+  transition: background 0.18s ease;
 }
-.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover {
-  color: var(--nuit-fonce);
-  transform: rotate(0deg) translateY(2px);
-  box-shadow: 0 2px 0 var(--or-fonce);
+.choix.elan tw-link::after, .choix.elan .enchantment-link::after {
+  content: "→";
+  font-family: "Alegreya", Georgia, serif;
+  font-weight: 700;
+  color: var(--tuque);
+  transition: transform 0.18s ease;
 }
+.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover { color: var(--nuit); background: #d3e1f0; }
+.choix.elan tw-link:hover::after, .choix.elan .enchantment-link:hover::after { transform: translateX(4px); }
 
 /* L'œuf de dragon de Manon : il tremble, éclot et laisse voir le nombre tiré. L'image est carrée et
    l'œuf est en son centre : il est centré dans sa colonne et dans la hauteur de l'encart. Le résultat
@@ -601,7 +638,7 @@ def passage_chapitre(ch):
         suite.append('<div class="fin"><span class="mot-fin">FIN</span>'
                      f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}</div></div>')
     texte = ('<div class="texte">'
-             f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>'
+             f'<h1 class="chapitre"><span class="numero">{numero_chapitre(ch["numero"])}</span>'
              f'<span class="titre">{ch["titre"]}</span></h1>'
              + "\n\n".join(corps) + "".join(suite) + "</div>")
     # Colonne de droite : l'illustration, qui suit la lecture au défilement
@@ -614,6 +651,13 @@ def passage_chapitre(ch):
                 + "".join(f'<span class="halo"><img src="{i}" alt="{ch["titre"]}"></span>' for i in images)
                 + '</div></div>')
     return f'<div class="page">{texte}{cote}</div>'
+
+
+def numero_chapitre(numero):
+    """« Chapitre 2 » devient la pastille rouge 2 suivie du mot Chapitre ; le Prologue reste un mot seul"""
+    if numero.startswith("Chapitre "):
+        return f'<b>{numero.split()[-1]}</b> Chapitre'
+    return numero
 
 
 def illustration(nom):
@@ -632,7 +676,8 @@ def passage_garde():
         f'<div class="grand-titre">{titre}</div>'
         f'<span class="nom-auteur">{AUTRICES}</span></div>'
         f'<div class="synopsis">{SYNOPSIS}</div>'
-        f'<div class="commencer">{lien("Commencer l\'histoire", "Prologue")}</div>'
+        '<div class="commencer"><span class="trait"></span>'
+        f'{lien("Commencer l\'histoire", "Prologue")}<span class="trait droite"></span></div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")} '
         f'{lien("L\'arbre de l\'histoire", "L\'arbre de l\'histoire")}</div>'
         "</div></div></div>"
