@@ -82,6 +82,8 @@
 
 
 
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>L'île aux dragons</title>
@@ -130,27 +132,25 @@ tw-story {
   line-height: 1.65;
   padding: 4em 1.25em 4em;
 }
-tw-passage { max-width: 1260px; margin: 0 auto; }
+tw-passage { max-width: 1220px; margin: 0 auto; }
 
-/* Pages de lecture : le texte à gauche, l'illustration à droite, qui suit le défilement */
+/* Pages de lecture : le texte à gauche dans une colonne de lecture, la planche à droite, collée au texte et
+   aussi large que possible ; l'ensemble reste centré dans la page */
 .page {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
-  gap: 3em;
+  grid-template-columns: minmax(0, 33em) minmax(0, 1fr);
+  gap: 2.2em;
   align-items: start;
+  justify-content: center;
 }
-.texte { max-width: 36em; }
 .cote { position: sticky; top: 1em; margin-top: 0.5em; }
 .illustration { display: flex; flex-direction: column; gap: 1.6em; }
 .halo { display: block; }
-/* Le cadre épouse la planche : l'image garde ses proportions et n'est jamais étirée dans une boîte plus large */
+/* Le cadre épouse la planche : l'image occupe toute la largeur de sa colonne, sans marge autour */
 .illustration img {
   display: block;
-  width: auto;
+  width: 100%;
   height: auto;
-  max-width: 100%;
-  max-height: 94vh;
-  margin: 0 auto;
   border-radius: 16px;
   box-shadow: 0 14px 30px -12px rgba(36, 48, 90, 0.45);
 }
@@ -162,7 +162,7 @@ tw-passage { max-width: 1260px; margin: 0 auto; }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Titres de chapitre : le numéro dans une pastille rouge tuque, le titre en lettres de carte au trésor */
+/* Titres de chapitre : le mot Chapitre en rouge tuque, le numéro dans une pastille bleu glace, le titre en lettres de carte au trésor */
 .chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1em; line-height: 1.1; }
 .chapitre .numero {
   display: inline-flex;
@@ -171,7 +171,7 @@ tw-story { overflow: clip; }
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
   font-size: 0.95em;
-  color: var(--gris);
+  color: var(--tuque);
   margin-bottom: 0.35em;
 }
 .chapitre .numero b {
@@ -181,7 +181,7 @@ tw-story { overflow: clip; }
   width: 1.9em;
   height: 1.9em;
   border-radius: 50%;
-  background: var(--tuque);
+  background: var(--glace);
   color: #fff;
   font-weight: 700;
   font-size: 1.05em;
