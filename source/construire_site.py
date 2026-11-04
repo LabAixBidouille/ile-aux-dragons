@@ -62,17 +62,17 @@ CITATION = ("Anna affronte le sorcier. Grâce à son intelligence et son habilet
             "les dragons.")
 
 CSS = """
-@font-face { font-family: "Cinzel"; font-weight: 400 900; font-display: swap; src: url("fonts/Cinzel.woff2") format("woff2"); }
-@font-face { font-family: "Marcellus"; font-display: swap; src: url("fonts/Marcellus.woff2") format("woff2"); }
-/* Dans Cinzel et Marcellus, le 1 ressemble à un I : les chiffres sont pris dans Lora */
-@font-face { font-family: "Cinzel"; font-display: swap; src: url("fonts/Lora.woff2") format("woff2"); unicode-range: U+0030-0039; }
-@font-face { font-family: "Marcellus"; font-display: swap; src: url("fonts/Lora.woff2") format("woff2"); unicode-range: U+0030-0039; }
-@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/Lora.woff2") format("woff2"); }
-@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("fonts/Lora-i.woff2") format("woff2"); }
-@font-face { font-family: "Nunito"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("fonts/Nunito.woff2") format("woff2"); }
+@font-face { font-family: "Eagle Lake"; font-display: swap; src: url("fonts/EagleLake.woff2") format("woff2"); }
+@font-face { font-family: "Skranji"; font-weight: 700; font-display: swap; src: url("fonts/Skranji.woff2") format("woff2"); }
+@font-face { font-family: "Alegreya"; font-style: normal; font-weight: 400 900; font-display: swap; src: url("fonts/Alegreya.woff2") format("woff2"); }
+@font-face { font-family: "Alegreya"; font-style: italic; font-weight: 400 900; font-display: swap; src: url("fonts/Alegreya-i.woff2") format("woff2"); }
+@font-face { font-family: "Literata"; font-style: normal; font-weight: 200 900; font-display: swap; src: url("fonts/Literata.woff2") format("woff2"); }
+@font-face { font-family: "Literata"; font-style: italic; font-weight: 200 900; font-display: swap; src: url("fonts/Literata-i.woff2") format("woff2"); }
 
-/* « Braise et neige » : la nuit bleue de l'île pour la couverture et le moment du tirage, la page
-   blanche pour la lecture, l'or et la braise de Croquemou pour les titres et les lueurs */
+/* Livre jeunesse d'aventure : la nuit bleue de l'île pour la couverture et le moment du tirage, la page
+   blanche pour la lecture, l'or et la braise de Croquemou pour les étiquettes et les boutons.
+   Titres en Eagle Lake (carte au trésor), étiquettes et boutons en Skranji (aventure), texte en
+   Alegreya (livre de contes), encart du tirage en Literata. */
 :root {
   --nuit: #24305a;
   --nuit-fonce: #18203d;
@@ -81,61 +81,72 @@ CSS = """
   --or-clair: #ffe1a8;
   --or-fonce: #b9692a;
   --braise: #e0782f;
+  --braise-fonce: #a9531f;
   --encre: #2a2c3d;
   --gris: #6a6e80;
   --papier: #ffffff;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); }
 tw-story {
-  font-family: "Lora", Georgia, serif;
-  font-size: 1.04em;
-  line-height: 1.75;
+  font-family: "Alegreya", Georgia, serif;
+  font-size: 1.06em;
+  line-height: 1.65;
   padding: 4em 1.25em 4em;
 }
-tw-passage { max-width: 1180px; margin: 0 auto; }
+tw-passage { max-width: 1140px; margin: 0 auto; }
 
-/* Pages de lecture : le texte à gauche, l'illustration à droite, qui suit le défilement */
+/* Pages de lecture : le texte à gauche, l'illustration à droite comme une photo collée, qui suit le
+   défilement */
 .page {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 2.8em;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 3em;
   align-items: start;
 }
-.cote { position: sticky; top: 1.5em; margin-top: 2.5em; }
-.illustration { display: flex; flex-direction: column; gap: 1.4em; }
+.texte { max-width: 36em; }
+.cote { position: sticky; top: 1.5em; margin-top: 1.5em; }
+.illustration { display: flex; flex-direction: column; gap: 1.6em; }
 .halo { display: block; }
 .illustration img {
   display: block;
   width: 100%;
-  max-height: 88vh;
+  max-height: 86vh;
   object-fit: contain;
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px rgba(224, 138, 51, 0.55), 0 0 36px -6px rgba(242, 178, 91, 0.6);
+  border: 8px solid #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 22px rgba(36, 48, 90, 0.3);
+  transform: rotate(1.5deg);
 }
-.page:not(:has(.cote)) { grid-template-columns: minmax(0, 40em); justify-content: center; }
+.halo:nth-child(2) img { transform: rotate(-1.5deg); }
+.page:not(:has(.cote)) { grid-template-columns: minmax(0, 38em); justify-content: center; }
 @media (max-width: 800px) {
-  .page { grid-template-columns: minmax(0, 1fr); gap: 1.4em; }
+  .page { grid-template-columns: minmax(0, 1fr); gap: 1.6em; }
   .cote { position: static; order: -1; margin-top: 0; }
+  .illustration img { transform: none; }
 }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Titres de chapitre : le numéro en petites capitales dorées, le titre gravé en bleu nuit */
-.chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1.1em; line-height: 1.1; }
+/* Titres de chapitre : une étiquette orange penchée, le titre en lettres de carte au trésor */
+.chapitre { font-size: 1em; font-weight: 400; margin: 0 0 1em; line-height: 1.1; }
 .chapitre .numero {
-  display: block;
-  font-family: "Marcellus", Georgia, serif;
-  font-size: 0.88em;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--or-fonce);
-  margin-bottom: 0.4em;
+  display: inline-block;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
+  color: #fff;
+  background: var(--braise);
+  padding: 0.12em 0.9em 0.08em;
+  border-radius: 8px;
+  transform: rotate(-3deg);
+  margin-bottom: 0.5em;
 }
 .chapitre .titre {
   display: block;
-  font-family: "Cinzel", Georgia, serif;
-  font-weight: 500;
-  font-size: 2.1em;
+  font-family: "Eagle Lake", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.85em;
+  line-height: 1.15;
   color: var(--nuit);
 }
 
@@ -148,147 +159,141 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .garde {
   min-height: calc(100vh - 2.2em);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(0.8em, 3vh, 2em);
+  align-items: center;
 }
-.garde-entete { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .garde-corps {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(24em, 1fr);
-  gap: 3.2em;
+  grid-template-columns: minmax(0, 1fr) minmax(22em, 1fr);
+  gap: 3.4em;
   align-items: center;
   width: 100%;
-  max-width: 1140px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 1.5em 0;
 }
 .garde-image img {
   display: block;
   width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px rgba(242, 178, 91, 0.5), 0 0 40px -6px rgba(242, 178, 91, 0.45);
+  max-height: 84vh;
+  object-fit: contain;
+  border: 8px solid #fff;
+  border-radius: 6px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  transform: rotate(-2deg);
 }
-.garde-texte { display: flex; flex-direction: column; gap: clamp(1.1em, 3.4vh, 1.9em); text-align: center; }
+.garde-texte { display: flex; flex-direction: column; align-items: center; gap: clamp(0.9em, 2.6vh, 1.5em); text-align: center; }
+.garde-entete { display: flex; flex-direction: column; align-items: center; }
 @media (max-width: 800px) {
   .garde { min-height: 0; }
-  .garde-corps { grid-template-columns: minmax(0, 1fr); gap: 1.6em; }
+  .garde-corps { grid-template-columns: minmax(0, 1fr); gap: 2em; }
+  .garde-image img { transform: none; }
 }
-.garde .surtitre {
-  font-family: "Marcellus", Georgia, serif;
-  font-size: 0.88em;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #b9c4e6;
-}
-/* Titre doré qui luit dans la nuit */
+.garde .surtitre { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1em; color: var(--or-clair); }
 .garde .grand-titre {
-  font-family: "Cinzel", Georgia, serif;
-  font-weight: 500;
-  font-size: clamp(2.4em, 8vh, 4.4em);
+  font-family: "Eagle Lake", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.3em, 7vh, 3.4em);
   line-height: 1.05;
-  background: linear-gradient(180deg, #fff3d0, var(--or) 60%, var(--braise));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 18px rgba(242, 178, 91, 0.45));
-  margin: 0.25em 0 0.2em;
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--braise), 6px 6px 0 var(--nuit-fonce);
+  margin: 0.15em 0 0.1em;
 }
-.garde .nom-auteur {
-  font-family: "Marcellus", Georgia, serif;
-  font-size: clamp(1.2em, 3.4vh, 1.5em);
-  letter-spacing: 0.12em;
-  color: var(--or);
-}
-.garde .synopsis { margin: 0 auto; max-width: 38em; font-size: 1.02em; line-height: 1.75; color: #dfe4f5; }
-/* Commencer : un bouton d'or qui luit */
+.garde .grand-titre span { color: var(--or); }
+.garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: var(--or); }
+.garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #dfe4f5; }
+/* Commencer : un gros bouton braise, légèrement penché */
 .garde .commencer tw-link, .garde .commencer .enchantment-link {
   display: inline-block;
-  font-family: "Marcellus", Georgia, serif;
-  font-weight: 400;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
   font-size: 1.3em;
-  letter-spacing: 0.1em;
-  color: #1a2244;
-  background: linear-gradient(180deg, #ffd890, #f0a04b);
-  padding: 0.5em 1.8em;
-  border-radius: 6px;
-  box-shadow: 0 0 24px rgba(240, 160, 75, 0.55);
-  transition: box-shadow 0.2s ease;
+  color: #fff;
+  background: var(--braise);
+  padding: 0.3em 1.5em 0.25em;
+  border-radius: 14px;
+  box-shadow: 0 5px 0 var(--braise-fonce);
+  transform: rotate(-1.5deg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .garde .commencer tw-link:hover, .garde .commencer .enchantment-link:hover {
-  color: #1a2244;
-  box-shadow: 0 0 34px 6px rgba(240, 160, 75, 0.7);
+  color: #fff;
+  transform: rotate(0deg) translateY(2px);
+  box-shadow: 0 3px 0 var(--braise-fonce);
 }
-.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8em 1.4em; }
+.garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7em 1em; }
 
-/* Petits boutons secondaires : un liseré d'or */
+/* Petits boutons secondaires */
 .secondaires tw-link, .secondaires .enchantment-link {
   display: inline-block;
-  font-family: "Marcellus", Georgia, serif;
-  font-weight: 400;
-  font-size: 1em;
-  letter-spacing: 0.06em;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
   color: var(--nuit);
-  border: 1px solid var(--or);
-  border-radius: 6px;
-  padding: 0.3em 1.1em;
+  border: 2px solid var(--or);
+  border-radius: 12px;
+  padding: 0.2em 1em 0.15em;
   background: var(--papier);
-  transition: box-shadow 0.2s ease;
 }
-.secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); box-shadow: 0 0 16px rgba(242, 178, 91, 0.5); }
+.secondaires tw-link:hover, .secondaires .enchantment-link:hover { color: var(--nuit); background: var(--or-clair); }
 .garde .secondaires tw-link, .garde .secondaires .enchantment-link { color: var(--or-clair); background: transparent; border-color: rgba(242, 178, 91, 0.6); }
-.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: #fff; }
+.garde .secondaires tw-link:hover, .garde .secondaires .enchantment-link:hover { color: var(--nuit-fonce); background: var(--or); }
 
 /* Lien Couverture */
 .retour { margin: 0 auto 1.2em; text-align: left; }
 .retour tw-link, .retour .enchantment-link,
 .lien-retour tw-link, .lien-retour .enchantment-link {
-  font-family: "Marcellus", Georgia, serif;
-  font-weight: 400;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
   font-size: 0.9em;
-  letter-spacing: 0.06em;
   color: var(--gris);
 }
 .retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
-.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--or-fonce); }
+.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--braise); }
 
-/* Le moment du tirage : un encart de nuit sur la page blanche, la consigne, les choix et l'œuf */
+/* Le moment du tirage : un encart de nuit sur la page blanche, en Literata, avec l'œuf à droite */
 .de {
   display: flex;
   align-items: center;
-  gap: 1.6em;
+  gap: 1.2em;
   margin-top: 0.4em;
-  padding: 1.3em 1.6em;
-  border-radius: 12px;
+  padding: 1.15em 1.4em;
+  border-radius: 16px;
   background: radial-gradient(ellipse at 80% 0%, var(--nuit-clair), var(--nuit) 55%, var(--nuit-fonce));
   color: #eef1fb;
-  box-shadow: 0 10px 26px -12px rgba(24, 32, 61, 0.7);
+  font-family: "Literata", Georgia, serif;
+  font-size: 0.9em;
+  line-height: 1.55;
 }
 .de-texte { flex: 1; min-width: 0; }
-.de .consigne {
-  display: block;
-  font-style: italic;
-  font-size: 1.12em;
-  line-height: 1.45;
-  color: var(--or-clair);
-  margin-bottom: 0.6em;
-}
-.choix { display: flex; flex-direction: column; align-items: flex-start; gap: 0.45em; }
-.choix tw-link, .choix .enchantment-link {
-  color: var(--nuit);
-  font-weight: 600;
-  border-bottom: 1px solid rgba(224, 120, 47, 0.6);
-}
+.de .consigne { display: block; font-style: italic; color: var(--or-clair); margin-bottom: 0.6em; }
+.choix { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5em; }
+.choix tw-link, .choix .enchantment-link { color: var(--nuit); font-weight: 700; }
 .choix tw-link:hover, .choix .enchantment-link:hover { color: var(--braise); }
-.de .choix tw-link, .de .choix .enchantment-link { color: #fff; border-bottom-color: rgba(242, 178, 91, 0.6); }
+.de .choix tw-link, .de .choix .enchantment-link { color: #fff; }
 .de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--or); }
+/* Le nombre à obtenir, dans une pastille dorée devant le choix */
+.tirage { display: inline-flex; align-items: center; gap: 0.55em; }
+.tirage b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8em;
+  height: 1.8em;
+  padding: 0 0.5em;
+  border-radius: 999px;
+  background: var(--or);
+  color: var(--nuit-fonce);
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
+}
 .choix .relance { font-style: italic; color: var(--gris); }
-.de .choix .relance { color: #b9c4e6; }
+.de .choix .relance { color: #b9c4e6; font-size: 0.95em; }
 .suite { margin-top: 0.8em; }
 
 /* Séparateur : une étincelle dorée entre deux traits qui s'effacent */
-.separateur { display: flex; align-items: center; justify-content: center; gap: 0.7em; margin: 1.6em 0 1.2em; }
-.separateur::before, .separateur::after { content: ""; width: 5.5em; height: 1px; background: linear-gradient(to right, transparent, var(--or)); }
+.separateur { display: flex; align-items: center; justify-content: center; gap: 0.7em; margin: 1.5em 0 1.1em; }
+.separateur::before, .separateur::after { content: ""; width: 5.5em; height: 1.5px; background: linear-gradient(to right, transparent, var(--or)); }
 .separateur::after { background: linear-gradient(to left, transparent, var(--or)); }
 .separateur .embleme {
   width: 1em;
@@ -296,34 +301,36 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   background: radial-gradient(circle, #fff3d0 0 20%, var(--or) 45%, transparent 70%);
   filter: drop-shadow(0 0 6px rgba(242, 178, 91, 0.9));
 }
-.garde .separateur { margin: 0; }
 
-/* Renvoi seul : un bouton blanc au liseré d'or */
-.elan { align-items: center; margin-top: 2.2em; }
+/* Renvoi seul : un bouton doré penché */
+.elan { align-items: flex-start; margin-top: 1.6em; }
 .choix.elan tw-link, .choix.elan .enchantment-link {
   display: inline-block;
-  font-family: "Marcellus", Georgia, serif;
-  font-weight: 400;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
   font-size: 1.1em;
-  letter-spacing: 0.08em;
-  color: var(--nuit);
-  background: var(--papier);
-  border: 1px solid var(--or);
-  border-radius: 6px;
-  padding: 0.45em 1.4em;
-  box-shadow: 0 0 16px rgba(242, 178, 91, 0.35);
-  transition: box-shadow 0.2s ease;
+  color: var(--nuit-fonce);
+  background: var(--or);
+  padding: 0.3em 1.3em 0.2em;
+  border-radius: 12px;
+  box-shadow: 0 4px 0 var(--or-fonce);
+  transform: rotate(-1deg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover { color: var(--nuit); box-shadow: 0 0 26px 4px rgba(242, 178, 91, 0.55); }
+.choix.elan tw-link:hover, .choix.elan .enchantment-link:hover {
+  color: var(--nuit-fonce);
+  transform: rotate(0deg) translateY(2px);
+  box-shadow: 0 2px 0 var(--or-fonce);
+}
 
 /* L'œuf de dragon de Manon : il tremble, éclot et laisse voir le nombre tiré. L'image est carrée et
    l'œuf est en son centre : il est centré dans sa colonne et dans la hauteur de l'encart. Le résultat
    écrit n'est lu que par les lecteurs d'écran. */
-.lancer { flex: none; width: 7em; align-self: stretch; display: flex; align-items: center; justify-content: center; }
+.lancer { flex: none; width: 6.4em; align-self: stretch; display: flex; align-items: center; justify-content: center; }
 .oeuf {
   position: relative;
-  width: 7em;
-  height: 7em;
+  width: 6.4em;
+  height: 6.4em;
   margin: -0.8em 0;
   padding: 0;
   border: none;
@@ -344,8 +351,8 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Cinzel", Georgia, serif;
-  font-weight: 500;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
   font-size: 2.8em;
   line-height: 1;
   color: var(--or-clair);
@@ -366,9 +373,9 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   white-space: nowrap;
 }
 @media (max-width: 600px) {
-  .de { gap: 0.6em; padding: 1.1em 1.1em; }
-  .lancer { width: 5.2em; }
-  .oeuf { width: 5.2em; height: 5.2em; margin: -0.5em 0; }
+  .de { gap: 0.6em; padding: 1em 1em; }
+  .lancer { width: 5em; }
+  .oeuf { width: 5em; height: 5em; margin: -0.5em 0; }
   .oeuf .dedans { font-size: 2.2em; }
 }
 
@@ -376,98 +383,93 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 .fin { margin-top: 0.6em; text-align: center; }
 .fin .mot-fin {
   display: block;
-  font-family: "Cinzel", Georgia, serif;
-  font-weight: 500;
-  font-size: 3em;
-  letter-spacing: 0.15em;
-  background: linear-gradient(180deg, #f6c46f, #df8a33 55%, #a9531f);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 12px rgba(242, 178, 91, 0.45));
-  margin-bottom: 0.4em;
+  font-family: "Eagle Lake", Georgia, serif;
+  font-size: 2.8em;
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--braise), 6px 6px 0 var(--nuit);
+  margin-bottom: 0.5em;
 }
-.appel { display: block; text-align: center; font-family: "Cinzel", Georgia, serif; font-weight: 500; font-size: 1.35em; color: var(--nuit); }
+.appel { display: block; text-align: center; font-family: "Eagle Lake", Georgia, serif; font-size: 1.3em; color: var(--nuit); }
 
 /* Page « Comment est née cette histoire » : texte centré, citation, fiches de l'atelier */
-.contexte { font-size: 0.95em; text-align: center; }
+.contexte { text-align: center; }
 .contexte .lien-retour { display: block; text-align: left; margin-bottom: 1em; }
 .contexte h1, .arbre h1 {
-  font-family: "Cinzel", Georgia, serif;
-  font-weight: 500;
-  font-size: 2.4em;
-  line-height: 1.1;
+  font-family: "Eagle Lake", Georgia, serif;
+  font-weight: 400;
+  font-size: 2.2em;
+  line-height: 1.15;
   color: var(--nuit);
   margin: 0.2em 0 0.1em;
 }
-.contexte-texte { max-width: 38em; margin: 0 auto; }
+.contexte-texte { max-width: 36em; margin: 0 auto; }
 .citation {
   max-width: 30em;
   margin: 2em auto;
-  padding: 0.2em 0;
   font-style: italic;
-  font-size: 1.35em;
+  font-size: 1.3em;
   line-height: 1.45;
   color: var(--nuit);
 }
 .citation .source {
   display: block;
   margin-top: 0.5em;
-  font-family: "Marcellus", Georgia, serif;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-style: normal;
-  font-size: 0.55em;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--or-fonce);
+  font-weight: 700;
+  font-size: 0.6em;
+  color: var(--braise);
 }
 .table-fiches {
   margin: 2.6em auto 0;
   max-width: 62em;
   padding: 1.8em 1.5em 2.2em;
-  border-radius: 12px;
+  border-radius: 16px;
   background: radial-gradient(ellipse at 80% 0%, var(--nuit-clair), var(--nuit) 55%, var(--nuit-fonce));
   color: #eef1fb;
 }
 .table-fiches .titre-table {
   display: block;
-  font-family: "Marcellus", Georgia, serif;
-  font-size: 1em;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: "Skranji", "Trebuchet MS", sans-serif;
+  font-weight: 700;
+  font-size: 1.2em;
   color: var(--or);
   margin-bottom: 1.3em;
 }
 .miniatures { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 2em; }
 .miniatures figure { margin: 0; }
-.miniatures figcaption { margin-top: 0.8em; font-style: italic; color: var(--or-clair); }
+.miniatures figcaption { margin-top: 0.9em; font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; color: var(--or-clair); }
 .miniature { display: block; padding: 0; border: none; background: none; cursor: zoom-in; }
-.miniature img { display: block; height: 15em; width: auto; border-radius: 6px; box-shadow: 0 0 0 1px rgba(242, 178, 91, 0.5), 0 0 26px -6px rgba(242, 178, 91, 0.6); transition: transform 0.2s ease; }
-.miniatures .miniature:hover img { transform: scale(1.04); }
+.miniature img { display: block; height: 15em; width: auto; border: 6px solid #fff; border-radius: 4px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); transition: transform 0.2s ease; }
+.miniatures figure:nth-child(1) img { transform: rotate(-3deg); }
+.miniatures figure:nth-child(2) img { transform: rotate(1.5deg); }
+.miniatures figure:nth-child(3) img { transform: rotate(-1deg); }
+.miniatures .miniature:hover img { transform: rotate(0) scale(1.04); }
 .contexte .credits { display: block; margin-top: 1.6em; font-size: 0.92em; color: var(--gris); }
 .contexte .secondaires { display: flex; justify-content: center; margin-top: 1.4em; }
 .agrandi { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2vh 2vw; background: rgba(24, 32, 61, 0.88); cursor: zoom-out; }
-.agrandi img { max-width: 100%; max-height: 96vh; border-radius: 6px; }
+.agrandi img { max-width: 100%; max-height: 96vh; border-radius: 4px; }
 @media (max-width: 600px) { .miniature img { height: 11em; } }
 
 /* Page de l'arbre */
 .arbre .lien-retour { display: block; font-size: 0.9em; }
 .arbre-tete { text-align: center; margin-bottom: 1.5em; }
 .arbre h1 { margin: 0; }
-.arbre .arbre-sous-titre { display: block; font-style: italic; font-size: 1.15em; color: var(--gris); margin: 0.4em 0 1em; }
+.arbre .arbre-sous-titre { display: block; font-style: italic; font-size: 1.1em; color: var(--gris); margin: 0.4em 0 1em; }
 .arbre img { display: block; width: 100%; max-width: 760px; height: auto; margin: 0 auto; }
 
-tw-link, .enchantment-link { color: var(--nuit); font-weight: 600; text-decoration: none; }
+tw-link, .enchantment-link { color: var(--nuit); font-weight: 700; text-decoration: none; }
 tw-link:hover, .enchantment-link:hover { color: var(--braise); }
 
 @media (max-width: 600px) {
-  tw-story { font-size: 0.98em; }
-  .garde .grand-titre { font-size: 2.6em; }
-  .chapitre .titre { font-size: 1.7em; }
+  tw-story { font-size: 1em; }
+  .garde .grand-titre { font-size: 2.4em; }
+  .chapitre .titre { font-size: 1.6em; }
 }
 @media (max-height: 620px) and (min-width: 801px) {
   tw-story:has(.garde) { padding-top: 0.6em; padding-bottom: 0.6em; }
-  .garde { min-height: calc(100vh - 1.4em); gap: 0.6em; }
-  .garde .synopsis { font-size: 0.95em; line-height: 1.5; }
+  .garde { min-height: calc(100vh - 1.4em); }
+  .garde .synopsis { font-size: 0.92em; line-height: 1.5; }
 }
 """
 
@@ -558,7 +560,14 @@ def passage_chapitre(ch):
                     choix.append(f'<span class="relance">{relance}</span>')
                     continue
                 texte, cible = ligne[2:].rsplit(" -> ", 1)
-                choix.append(lien(texte, f"Chapitre {cible}"))
+                texte = texte.rstrip(".")
+                tirage_vise = re.match(r"(\d|Un nombre pair|Un nombre impair) : (.*)", texte)
+                if tirage_vise:
+                    # Le nombre à obtenir dans une pastille dorée, devant le lien
+                    pastille = {"Un nombre pair": "Pair", "Un nombre impair": "Impair"}.get(tirage_vise[1], tirage_vise[1])
+                    choix.append(f'<span class="tirage"><b>{pastille}</b>{lien(tirage_vise[2], f"Chapitre {cible}")}</span>')
+                else:
+                    choix.append(lien(texte, f"Chapitre {cible}"))
         elif p == "FIN":
             fin = True
         elif p.startswith("**") and p.endswith("**"):
@@ -613,14 +622,16 @@ def illustration(nom):
 
 
 def passage_garde():
+    # La couverture à gauche comme une photo collée, le titre et le résumé à droite
+    titre = TITRE.replace("dragons", "<span>dragons</span>")
     return (
-        '<div class="garde"><div class="garde-entete">'
+        '<div class="garde"><div class="garde-corps"><div class="garde-image"><img src="images/couverture.jpg" '
+        'alt="Anna, tuque rouge et crosse de hockey, debout près de Croquemou face au château noir"></div>'
+        '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
-        f'<div class="grand-titre">{TITRE}</div>'
+        f'<div class="grand-titre">{titre}</div>'
         f'<span class="nom-auteur">{AUTRICES}</span></div>'
-        '<div class="garde-corps"><div class="garde-image"><img src="images/couverture.jpg" '
-        'alt="Anna, tuque rouge et crosse de hockey, arrive en bateau devant l’île et son château noir"></div>'
-        f'<div class="garde-texte"><div class="synopsis">{SYNOPSIS}</div>'
+        f'<div class="synopsis">{SYNOPSIS}</div>'
         f'<div class="commencer">{lien("Commencer l\'histoire", "Prologue")}</div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")} '
         f'{lien("L\'arbre de l\'histoire", "L\'arbre de l\'histoire")}</div>'
