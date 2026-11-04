@@ -90,6 +90,7 @@
 
 
 
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>L'île aux dragons</title>
@@ -245,12 +246,12 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   font-size: clamp(2.3em, 7vh, 3.3em);
   line-height: 1.05;
   color: #fff;
-  /* Ombre bleutée : un décalage bleu nuit profond et un halo bleu glace */
-  text-shadow: 3px 3px 0 #1a2350, 0 0 22px rgba(127, 163, 200, 0.55);
+  /* Ombre bleu glace sous tout le titre */
+  text-shadow: 3px 3px 0 var(--glace), 0 0 22px rgba(127, 163, 200, 0.45);
   margin: 0.15em 0 0.1em;
 }
-/* « dragons » : rouge clair du pull d’Anna, ombre dorée */
-.garde .grand-titre span { color: var(--pull-clair); text-shadow: 3px 3px 0 var(--or), 0 0 22px rgba(127, 163, 200, 0.55); }
+/* « dragons » : rouge clair du pull d’Anna, même ombre bleu glace que le reste du titre */
+.garde .grand-titre span { color: var(--pull-clair); }
 .garde .nom-auteur { font-family: "Skranji", "Trebuchet MS", sans-serif; font-weight: 700; font-size: 1.3em; color: #fff; }
 .garde .synopsis { margin: 0 auto; max-width: 32em; font-size: 0.98em; line-height: 1.65; color: #e2e7f6; }
 /* Commencer : le mot entre deux traits bleu glace, précédé de l'œuf de dragon qui tremble au survol */
