@@ -391,6 +391,13 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   opacity: 0;
   transition: opacity 0.4s ease 0.2s;
 }
+/* Tant qu'on ne l'a pas touché, l'œuf palpite et sa lueur grandit, pour qu'on le repère */
+.oeuf:not(.touche) .coque { animation: appel 1.8s ease-in-out infinite; }
+@keyframes appel {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(247, 176, 79, 0)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(247, 176, 79, 0.85)); }
+}
+.fleche-oeuf { flex: none; align-self: center; width: 3.8em; height: auto; margin: 0 -0.9em 0 -0.4em; transform: translateY(-0.6em); }
 .oeuf.tremble .coque { animation: tremble 0.12s linear infinite; }
 @keyframes tremble { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
 .oeuf.ouvert .coque { transform: scale(1.3); opacity: 0; }
@@ -406,6 +413,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 @media (max-width: 600px) {
   .de { gap: 0.6em; padding: 1em 1em; }
   .lancer { width: 5em; }
+  .fleche-oeuf { width: 2.2em; margin: 0 -0.7em 0 -0.6em; }
   .oeuf { width: 5em; height: 5em; margin: -0.5em 0; }
   .oeuf .dedans { font-size: 2.2em; }
 }
@@ -526,7 +534,11 @@ SEPARATEUR = '<div class="separateur"><span class="embleme"></span></div>'
 
 
 DE_VIRTUEL = (
-    # Un œuf de dragon à la place du dé : on le touche, il tremble, éclot et montre le nombre tiré
+    # Un œuf de dragon à la place du dé : on le touche, il tremble, éclot et montre le nombre tiré.
+    # Une flèche dorée tracée à la main désigne l'œuf, qui palpite doucement tant qu'on ne l'a pas touché
+    '<svg class="fleche-oeuf" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke="#f7b04f" '
+    'stroke-width="3" stroke-linecap="round" stroke-linejoin="round">'
+    '<path d="M4 8 C18 4 40 10 50 26"/><path d="M41 24 L51 28 L53 17"/></g></svg>'
     '<div class="lancer"><button class="oeuf" type="button" aria-label="Toucher l’œuf de dragon pour lancer le dé">'
     '<span class="coque"></span><span class="dedans"></span></button>'
     '<span class="resultat" aria-live="polite"></span></div>'
@@ -540,6 +552,7 @@ document.addEventListener('click', function (evenement) {
   if (!oeuf || oeuf.classList.contains('tremble')) return;
   var resultat = oeuf.parentNode.querySelector('.resultat');
   var face = 1 + Math.floor(Math.random() * 6);
+  oeuf.classList.add('touche');
   oeuf.classList.remove('ouvert');
   oeuf.classList.add('tremble');
   resultat.textContent = '';
