@@ -228,13 +228,13 @@ def chapitre(ch, pages):
 
 def document(pages, blanches=0):
     titre = e(TITRE).replace("dragons", "<span>dragons</span>")
+    # Couverture pleine page dans le style du livre, le résumé seul sur la page suivante
     couverture = (
-        '<section class="couverture">'
-        '<div class="surtitre">Une histoire dont le lecteur est le héros</div>'
-        f'<div class="titre-livre">{titre}</div>'
-        f'<div class="autrices">{e(AUTRICES)}</div>'
-        f'<img src="{(RACINE / "images/couverture.jpg").as_uri()}" alt="">'
-        '<div class="resume">' + "".join(f"<p>{e(p)}</p>" for p in SYNOPSIS.split("\n\n")) + "</div></section>"
+        '<style>.cv { page: couverture; position: relative; height: 185.5mm; overflow: hidden; }.cv .cv-entete { position: absolute; left: 0; right: 0; text-align: center; padding: 0 8mm; z-index: 2; }.cv .cv-image { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; }.cv .cv-image img { display: block; height: 100%; width: auto; position: absolute; top: 0; margin: 0; border: 0; border-radius: 0; }.cv-resume { display: flex; flex-direction: column; justify-content: center; height: 156mm; text-align: center; }.cv { background: #252f58; } .cv > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% center; margin: 0; border-radius: 0; }.cv .voile { position: absolute; left: 0; right: 0; top: 0; height: 80mm; background: linear-gradient(to bottom, rgba(24,32,61,0.92) 0%, rgba(24,32,61,0.75) 40%, rgba(24,32,61,0) 100%); }.cv .cv-entete { top: 14mm; } .cv .surtitre { font-family: "Skranji"; font-weight: 700; font-size: 10pt; color: #b9d0ea; text-shadow: 0 0 2mm rgba(0,0,0,0.6); }.cv .titre { font-family: "Eagle Lake"; font-size: 34pt; line-height: 1.05; color: #fff; margin: 2mm 0; text-shadow: 0.8mm 0.8mm 0 #24305a, 0 0 4mm rgba(0,0,0,0.7); }.cv .titre span { color: #f7b04f; } .cv .auteur { font-family: "Skranji"; font-weight: 700; font-size: 15pt; color: #fff; text-shadow: 0 0 3mm rgba(0,0,0,0.7); }.cv-resume p { font-size: 12pt; line-height: 1.5; }</style>'
+        '<section class="cv sans-numero"><div class="cv-entete"><div class="surtitre">Une histoire dont le lecteur est le héros</div><div class="titre">L’île aux <span>dragons</span></div><div class="auteur">' + e(AUTRICES) + '</div></div>'
+        f'<img src="{(RACINE / "images/couverture.jpg").as_uri()}" alt=""><div class="voile"></div>'
+        '</section><section class="page-seule sans-numero"><div class="cv-resume">'
+        + "".join(f"<p>{e(p)}</p>" for p in SYNOPSIS.split("\n\n")) + '' + "</div></section>"
     )
     fiches = RACINE / "images" / "fiches"
     # Texte de Manon, commun aux livres de l'atelier ; seule la phrase finale est en gras
