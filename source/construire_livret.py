@@ -130,6 +130,12 @@ ul.choix li {{ margin: 0 0 1.4mm; color: {NUIT}; font-weight: 700; }}
 .fiches .pleine {{ grid-column: 1 / -1; }}
 .dos {{ display: flex; flex-direction: column; justify-content: flex-end; height: 156mm; text-align: center;
   font-size: 9.5pt; color: {GRIS}; }}
+
+/* L'arbre de l'histoire : une page à petites marges, le titre en haut, l'arbre aussi grand que possible */
+@page arbre {{ margin: 8mm 6mm 9mm; @bottom-center {{ content: none; }} }}
+.arbre {{ page: arbre; height: 168mm; display: flex; flex-direction: column; align-items: center; }}
+.arbre h2 {{ margin-bottom: 2mm; }}
+.arbre img {{ flex: 1; min-height: 0; width: 100%; object-fit: contain; }}
 """
 
 SEPARATEUR = f'<div class="separateur"><img src="{(RACINE / "images/oeuf.png").as_uri()}" alt=""></div>'
@@ -245,6 +251,8 @@ def document(pages, blanches=0):
         "</div></section>"
     )
     chapitres = "".join(chapitre(ch, pages) for ch in lire_chapitres())
+    arbre = ('<section class="page-seule contexte arbre sans-numero"><h2>L’arbre de l’histoire</h2>'
+             f'<img src="{(RACINE / "images/arbre.svg").as_uri()}" alt=""></section>')
     vides = '<section class="page-seule sans-numero">&nbsp;</section>' * blanches
     dos = ('<section class="page-seule sans-numero"><div class="dos">'
            f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par {e(AUTRICES)} pendant l’atelier "
@@ -252,7 +260,7 @@ def document(pages, blanches=0):
            "d’Aix-en-Provence, en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
            "</div></section>")
     return (f'<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>{CSS}</style></head>'
-            f"<body>{couverture}{contexte}{chapitres}{vides}{dos}</body></html>")
+            f"<body>{couverture}{contexte}{chapitres}{arbre}{vides}{dos}</body></html>")
 
 
 def imprimer(source_html, pdf):
