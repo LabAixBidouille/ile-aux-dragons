@@ -644,7 +644,8 @@ def passage_chapitre(ch):
         suite.append(f'<div class="choix suite">{"".join(choix)}</div>')
     if fin:
         suite.append('<div class="fin"><span class="mot-fin">FIN</span>'
-                     f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}</div></div>')
+                     f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")} '
+                     f'{lien("Relire depuis le début", "Prologue")}</div></div>')
     texte = ('<div class="texte">'
              f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>'
              f'<span class="titre">{ch["titre"]}</span></h1>'
