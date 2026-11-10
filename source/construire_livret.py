@@ -256,8 +256,8 @@ def document(pages, blanches=0):
     vides = '<section class="page-seule sans-numero">&nbsp;</section>' * blanches
     dos = ('<section class="page-seule sans-numero"><div class="dos">'
            f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par {e(AUTRICES)} pendant l’atelier "
-           "« La quête du curry, une histoire dont tu es le héros », dans les bibliothèques Méjanes "
-           "d’Aix-en-Provence, en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
+           "« La quête du curry, une histoire dont tu es le héros », à la bibliothèque Li Campaneto "
+           "(bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
            "</div></section>")
     return (f'<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>{CSS}</style></head>'
             f"<body>{couverture}{contexte}{chapitres}{arbre}{vides}{dos}</body></html>")
