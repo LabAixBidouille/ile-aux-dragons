@@ -677,7 +677,7 @@ def passage_garde():
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
         f'<div class="grand-titre">{titre}</div>'
         f'<span class="nom-auteur">{AUTRICES}</span></div>'
-        f'<div class="synopsis">{SYNOPSIS}</div>'
+        f'<div class="synopsis">{SYNOPSIS.replace("Lance le dé", "Touche l’œuf de dragon")}</div>'
         '<div class="commencer"><span class="trait"></span>'
         f'{lien("Commencer l\'histoire", "Prologue")}<span class="trait droite"></span></div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")} '
