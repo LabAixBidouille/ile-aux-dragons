@@ -260,7 +260,7 @@ def document(pages, blanches=0):
            "(bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
            "</div></section>")
     return (f'<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>{CSS}</style></head>'
-            f"<body>{couverture}{contexte}{chapitres}{arbre}{vides}{dos}</body></html>")
+            f"<body>{couverture}{chapitres}{arbre}{contexte}{vides}{dos}</body></html>")
 
 
 def imprimer(source_html, pdf):
