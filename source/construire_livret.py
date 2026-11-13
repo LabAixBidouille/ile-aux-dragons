@@ -65,6 +65,11 @@ CSS = f"""
 html {{ font-family: "Alegreya", serif; font-size: 12pt; line-height: 1.4; color: {ENCRE}; }}
 body {{ margin: 0; }}
 p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
+/* Quatrième de couverture : le QR code vers le site du livre */
+.qr {{ text-align: center; margin: 0 0 9mm; }}
+.qr img {{ display: block; width: 24mm; height: 24mm; margin: 0 auto 2mm; }}
+.qr p {{ margin: 0; font-size: 9.5pt; }}
+.qr .adresse {{ font-size: 7.5pt; opacity: 0.7; }}
 .page-seule {{ break-before: page; }}
 .sans-numero {{ page: sans-numero; }}
 .marque {{ font-size: 1pt; color: #ffffff; }}
@@ -99,7 +104,7 @@ h1 {{ font-family: "Eagle Lake"; font-weight: 400; font-size: 18pt; line-height:
 .serre2 {{ font-size: 11.5pt; line-height: 1.33; }}
 
 /* Séparateur : l'œuf de dragon entre deux traits bleu glace, aligné sur la gauche du texte */
-.separateur {{ display: flex; align-items: center; justify-content: flex-start; gap: 1mm; margin: 4mm 0 3mm; break-after: avoid; }}
+.separateur {{ display: flex; align-items: center; justify-content: center; gap: 1mm; margin: 4mm 0 3mm; break-after: avoid; }}
 .separateur::before, .separateur::after {{ content: ""; width: 14mm; height: 3mm; background: url("{TRAIT}") no-repeat center / contain; }}
 .separateur::after {{ transform: scaleX(-1); }}
 .separateur img {{ width: 7mm; }}
@@ -244,17 +249,13 @@ def document(pages, blanches=0):
         + "".join(f"<p>{italique(p).replace('&lt;b&gt;', '<b>').replace('&lt;/b&gt;', '</b>')}</p>" for p in paragraphes)
         + '<p class="credits">Une histoire librement inspirée du récit de Louisa et de June.<br>Réalisation du livre : '
           "Laboratoire d’Aix-périmentation et de Bidouille.</p></section>"
-        '<section class="page-seule contexte"><h2>Les fiches de l’atelier</h2><div class="fiches">'
-        f'<img src="{(fiches / "fiche_recit.jpg").as_uri()}" alt="">'
-        f'<img src="{(fiches / "fiche_personnage_croquemou.jpg").as_uri()}" alt="">'
-        f'<img class="pleine" src="{(fiches / "fiche_situation_1.jpg").as_uri()}" alt="">'
-        "</div></section>"
     )
     chapitres = "".join(chapitre(ch, pages) for ch in lire_chapitres())
     arbre = ('<section class="page-seule contexte arbre sans-numero"><h2>L’arbre de l’histoire</h2>'
              f'<img src="{(RACINE / "images/arbre.svg").as_uri()}" alt=""></section>')
     vides = '<section class="page-seule sans-numero">&nbsp;</section>' * blanches
     dos = ('<section class="page-seule sans-numero"><div class="dos">'
+           f'<div class="qr"><img src="{(RACINE / "images" / "qr.svg").as_uri()}" alt=""><p>Lis cette histoire en ligne</p><p class="adresse">labaixbidouille.github.io/ile-aux-dragons</p></div>'
            f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par {e(AUTRICES)} pendant l’atelier "
            "« La quête du curry, une histoire dont tu es le héros », à la bibliothèque Li Campaneto "
            "(bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
