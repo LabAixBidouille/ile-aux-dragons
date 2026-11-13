@@ -234,6 +234,10 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   .garde .commencer .trait { width: 2.4em; }
   .garde .commencer tw-link, .garde .commencer .enchantment-link { font-size: 1.25em; }
 }
+/* Très petits écrans : les traits décoratifs disparaissent pour que le bouton tienne dans la largeur */
+@media (max-width: 380px) {
+  .garde .commencer .trait { display: none; }
+}
 .garde .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6em 0.8em; }
 /* Soulignés bleu glace ; au survol, ils prennent le style des boutons « Poursuis » */
 .garde .secondaires tw-link, .garde .secondaires .enchantment-link {
