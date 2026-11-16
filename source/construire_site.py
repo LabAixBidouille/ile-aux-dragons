@@ -270,7 +270,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
 
 /* Lien Couverture */
 .retour { margin: 0 auto 1.2em; text-align: left; }
-.retour tw-link, .retour .enchantment-link,
+.autres-livres, .retour tw-link, .retour .enchantment-link,
 .lien-retour tw-link, .lien-retour .enchantment-link {
   font-family: "Skranji", "Trebuchet MS", sans-serif;
   font-weight: 700;
@@ -278,7 +278,7 @@ tw-story:has(.garde) { padding-top: 1em; padding-bottom: 1em; }
   color: var(--gris);
 }
 .retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
-.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--tuque); }
+.autres-livres:hover, .retour tw-link:hover, .lien-retour tw-link:hover { color: var(--tuque); }
 
 /* Le moment du tirage : un encart de nuit sur la page blanche, en Literata, avec l'œuf à droite */
 .de {
@@ -515,6 +515,18 @@ tw-link:hover, .enchantment-link:hover { color: var(--tuque); }
   .garde .synopsis { font-size: 0.92em; line-height: 1.5; }
 }
 
+
+/* Lien discret vers la page qui réunit tous les livres de l'atelier, fixé dans le coin en haut à droite de l'écran, sur la page de garde
+   (même police et même couleur que le lien « ← Couverture » des chapitres, en plus petit) */
+.garde { position: relative; }
+.garde .autres-livres { position: fixed; top: 0.9em; right: 1.2em; z-index: 3; font-size: 0.78em; text-decoration: none; letter-spacing: normal; }
+.garde .autres-livres::after { content: " →"; }
+.garde .autres-livres { color: rgba(255, 255, 255, 0.72); }
+.garde .autres-livres:hover { color: #ffffff; }
+@media (max-width: 760px) {
+  .garde { padding-top: 2.2em !important; }
+  .garde .autres-livres { position: absolute; top: 0.5em; right: 0.4em; }
+}
 """
 
 
@@ -676,7 +688,7 @@ def passage_garde():
     # La couverture à gauche comme une photo collée, le titre et le résumé à droite
     titre = TITRE.replace("dragons", "<span>dragons</span>")
     return (
-        '<div class="garde"><div class="garde-corps"><div class="garde-image"><img src="images/couverture.jpg" '
+        '<div class="garde"><a class="autres-livres" href="https://labaixbidouille.github.io/la-quete-du-curry/" target="_top">Découvrir les autres livres</a><div class="garde-corps"><div class="garde-image"><img src="images/couverture.jpg" '
         'alt="Anna, tuque rouge et crosse de hockey, debout près de Croquemou face au château noir"></div>'
         '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
@@ -686,7 +698,7 @@ def passage_garde():
         '<div class="commencer"><span class="trait"></span>'
         f'{lien("Commencer l\'histoire", "Prologue")}<span class="trait droite"></span></div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")} '
-        f'{lien("L\'arbre de l\'histoire", "L\'arbre de l\'histoire")} (link: "Les autres livres")[(goto-url: "https://labaixbidouille.github.io/la-quete-du-curry/")]</div>'
+        f'{lien("L\'arbre de l\'histoire", "L\'arbre de l\'histoire")}</div>'
         "</div></div></div>"
     )
 
