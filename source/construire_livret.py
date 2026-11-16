@@ -72,6 +72,11 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .qr .adresse {{ font-size: 7.5pt; opacity: 0.7; }}
 .page-seule {{ break-before: page; }}
 .sans-numero {{ page: sans-numero; }}
+@page reserve {{ margin: 0; @bottom-center {{ content: none; }} }}
+.pleine-reserve {{ page: reserve; break-before: page; height: {HAUTEUR_PAGE}mm; background: {NUIT}; display: flex; align-items: center; justify-content: center; }}
+.pleine-reserve img {{ display: block; width: 100%; height: auto; }}
+.pleine-reserve.cul-de-lampe {{ background: #fff; }}
+.pleine-reserve.cul-de-lampe img {{ width: 30mm; }}
 .marque {{ font-size: 1pt; color: #ffffff; }}
 
 /* Couverture intérieure : le bleu nuit du site, à fond perdu, comme la page d'accueil */
@@ -231,6 +236,14 @@ def chapitre(ch, pages):
     return "".join(morceaux)
 
 
+# Dernière page entièrement blanche, sans numéro : Manon la colle sur le plat arrière de la couverture en bois
+FIN_BLANCHE = '<section class="page-seule sans-numero fin-blanche">&nbsp;</section>'
+
+# Visuels pour compléter le livret jusqu'à un multiple de 4 : l'image du dragon et d'Anna et l'œuf de dragon en
+# pleine page sur le bleu nuit, puis l'œuf détouré, petit, au milieu d'une page blanche (cul-de-lampe)
+RESERVE = [("couverture.jpg", "nuit"), ("livret/oeuf.jpg", "nuit"), ("oeuf.png", "cul-de-lampe")]
+
+
 def document(pages, blanches=0):
     titre = e(TITRE).replace("dragons", "<span>dragons</span>")
     # Couverture pleine page dans le style du livre, le résumé seul sur la page suivante
@@ -253,7 +266,12 @@ def document(pages, blanches=0):
     chapitres = "".join(chapitre(ch, pages) for ch in lire_chapitres())
     arbre = ('<section class="page-seule contexte arbre sans-numero"><h2>L’arbre de l’histoire</h2>'
              f'<img src="{(RACINE / "images/arbre.svg").as_uri()}" alt=""></section>')
-    vides = '<section class="page-seule sans-numero">&nbsp;</section>' * blanches
+    # Les pages qui resteraient blanches reçoivent d'abord les visuels de RESERVE, en pleine page, sans texte,
+    # sur le bleu nuit du livre (toutes les planches de chapitre sont déjà en pleine page)
+    reserve = RESERVE[:blanches]
+    vides = ("".join(f'<section class="pleine-reserve {style}"><img src="{(RACINE / "images" / n).as_uri()}" alt=""></section>'
+                     for n, style in reserve)
+             + '<section class="page-seule sans-numero">&nbsp;</section>' * (blanches - len(reserve)))
     dos = ('<section class="page-seule sans-numero"><div class="dos">'
            f'<div class="qr"><img src="{(RACINE / "images" / "qr.svg").as_uri()}" alt=""><p>Lis cette histoire en ligne</p><p class="adresse">labaixbidouille.github.io/ile-aux-dragons</p></div>'
            f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par {e(AUTRICES)} pendant l’atelier "
@@ -261,7 +279,7 @@ def document(pages, blanches=0):
            "(bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
            "</div></section>")
     return (f'<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>{CSS}</style></head>'
-            f"<body>{couverture}{chapitres}{arbre}{contexte}{vides}{dos}</body></html>")
+            f"<body>{couverture}{chapitres}{arbre}{contexte}{vides}{dos}{FIN_BLANCHE}</body></html>")
 
 
 def imprimer(source_html, pdf):
@@ -370,6 +388,68 @@ def traits_de_coupe(dossier):
     return PdfReader(str(pdf)).pages[0]
 
 
+
+def imposer_dos_colle(lecture, sortie, bord_long):
+    """Version « dos collé » : A4 paysage en recto verso, deux pages du livre côte à côte par face, sans pli.
+    On massicote toute la pile d'un coup, on pose la pile de gauche sur celle de droite, et les pages se
+    suivent ; il reste à encoller le dos. Pour S feuilles (N = 4S pages) : feuille k, recto [2k+1 | 2(S+k)+1],
+    verso [2(S+k)+2 | 2k+2] (en miroir, la feuille se retourne par le bord court ; en bord long, le verso est
+    tourné de 180°). Chaque page est posée comme un objet « forme », pour que ses dégradés la suivent."""
+    from pypdf import PdfReader, PdfWriter
+    from pypdf.generic import ArrayObject, DecodedStreamObject, DictionaryObject, FloatObject, NameObject
+    pages = PdfReader(str(lecture)).pages
+    n = len(pages)
+    assert n % 4 == 0, f"{n} pages : il faut un multiple de 4"
+    s = n // 4
+    x0 = (A4_L - 2 * LARGEUR_PAGE * MM) / 2
+    y0 = (A4_H - HAUTEUR_PAGE * MM) / 2
+    gauche, milieu, droite = x0, x0 + LARGEUR_PAGE * MM, x0 + 2 * LARGEUR_PAGE * MM
+    bas, haut = y0, y0 + HAUTEUR_PAGE * MM
+    # Traits de coupe très clairs, prolongés jusqu'aux bords de la feuille (ici, le milieu se coupe aussi)
+    traits = "q 0.788 0.788 0.788 RG 0.5 w "
+    traits += "".join(f"0 {y:.2f} m {A4_L:.2f} {y:.2f} l S " for y in (bas, haut))
+    traits += "".join(f"{x:.2f} 0 m {x:.2f} {A4_H:.2f} l S " for x in (gauche, milieu, droite))
+    traits += "Q\n"
+    consigne = ("q BT /Consigne 7 Tf 0.45 0.45 0.45 rg "
+                f"{gauche + 3 * MM:.2f} {A4_H - 6.5 * MM:.2f} Td "
+                "(Massicoter la pile, poser la pile de gauche sur celle de droite, encoller le dos) Tj ET Q\n")
+    ecrivain = PdfWriter()
+    formes = {}
+
+    def face(indice_gauche, indice_droite, retournee, avec_consigne):
+        feuille = ecrivain.add_blank_page(width=A4_L, height=A4_H)
+        objets, dessin = DictionaryObject(), ""
+        for indice, x in ((indice_gauche, gauche), (indice_droite, milieu)):
+            if indice not in formes:
+                page = pages[indice - 1]
+                forme = DecodedStreamObject()
+                forme.set_data(page.get_contents().get_data())
+                forme[NameObject("/Type")] = NameObject("/XObject")
+                forme[NameObject("/Subtype")] = NameObject("/Form")
+                forme[NameObject("/BBox")] = ArrayObject([FloatObject(v) for v in page.mediabox])
+                forme[NameObject("/Resources")] = page["/Resources"].clone(ecrivain)
+                formes[indice] = ecrivain._add_object(forme)
+            objets[NameObject(f"/Page{indice}")] = formes[indice]
+            dessin += f"q 1 0 0 1 {x:.3f} {y0:.3f} cm /Page{indice} Do Q\n"
+        ressources = DictionaryObject({NameObject("/XObject"): objets})
+        if avec_consigne:
+            police = DictionaryObject({NameObject("/Type"): NameObject("/Font"), NameObject("/Subtype"): NameObject("/Type1"),
+                                       NameObject("/BaseFont"): NameObject("/Helvetica")})
+            ressources[NameObject("/Font")] = DictionaryObject({NameObject("/Consigne"): ecrivain._add_object(police)})
+        feuille[NameObject("/Resources")] = ressources
+        contenu = DecodedStreamObject()
+        contenu.set_data((traits + (consigne if avec_consigne else "") + dessin).encode("latin-1"))
+        feuille.replace_contents(contenu)
+        if retournee:
+            feuille.rotate(180)
+
+    for k in range(s):
+        face(2 * k + 1, 2 * (s + k) + 1, False, k == 0)
+        face(2 * (s + k) + 2, 2 * k + 2, bord_long, False)
+    with open(sortie, "wb") as f:
+        ecrivain.write(f)
+
+
 def imposer(lecture, traits, sortie, bord_long):
     pages = PdfReader(str(lecture)).pages
     n = len(pages)
@@ -427,6 +507,8 @@ def construire():
         traits = traits_de_coupe(dossier)
         imposer(lecture, traits, IMPRESSION / f"{NOM}_Livret_A4_bord_court.pdf", bord_long=False)
         imposer(lecture, traits, IMPRESSION / f"{NOM}_Livret_A4_bord_long.pdf", bord_long=True)
+        imposer_dos_colle(lecture, IMPRESSION / f"{NOM}_Livret_A4_dos_colle_bord_court.pdf", bord_long=False)
+        imposer_dos_colle(lecture, IMPRESSION / f"{NOM}_Livret_A4_dos_colle_bord_long.pdf", bord_long=True)
     total = len(PdfReader(str(lecture)).pages)
     print(f"{lecture} : {total} pages, soit {total // 4} feuilles A4 recto verso")
     print("Chapitres resserrés :", ", ".join(("P" if c == 0 else str(c)) + ("+" if c in SERRES2 else "") for c in sorted(SERRES)) or "aucun")
