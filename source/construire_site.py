@@ -684,6 +684,7 @@ def illustration(nom):
     return "prologue" if nom == "Prologue" else f"chapitre-{int(nom.split()[-1]):02d}"
 
 
+# Le patron du dé du livret, à télécharger si on l'a perdu (outils/)
 def passage_garde():
     # La couverture à gauche comme une photo collée, le titre et le résumé à droite
     titre = TITRE.replace("dragons", "<span>dragons</span>")
@@ -698,7 +699,7 @@ def passage_garde():
         '<div class="commencer"><span class="trait"></span>'
         f'{lien("Commencer l\'histoire", "Prologue")}<span class="trait droite"></span></div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")} '
-        f'{lien("L\'arbre de l\'histoire", "L\'arbre de l\'histoire")}</div>'
+        f'{lien("L\'arbre de l\'histoire", "L\'arbre de l\'histoire")} (link-repeat: "Le dé à fabriquer")[(open-url: "outils/L_ile_aux_dragons_de_a_fabriquer.pdf")]</div>'
         "</div></div></div>"
     )
 
